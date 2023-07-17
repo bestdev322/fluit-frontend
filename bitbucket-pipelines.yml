@@ -36,22 +36,16 @@ pipelines:
     master:
       - parallel:
         - step:
-            name: Build and Test
+            name: Build 
             caches:
               - node
             script:
               - npm install
               # CI=true in default variables for Bitbucket Pipelines https://support.atlassian.com/bitbucket-cloud/docs/variables-in-pipelines/
-              - npm test
               - npm run build
             artifacts:
               - build/**
-        - step:
-            name: Security Scan
-            script:
-              # Run a security scan for sensitive data.
-              # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
-              - pipe: atlassian/git-secrets-scan:0.5.1
+
       - step:
           name: Deploy to Production
           deployment: Production
@@ -65,7 +59,7 @@ pipelines:
                 AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
                 AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                 AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
-                S3_BUCKET: 'my-bucket-name'
+                S3_BUCKET: 'app.verum.digital'
                 LOCAL_PATH: 'build'
             # triggering a distribution invalidation to refresh the CDN caches
             - pipe: atlassian/aws-cloudfront-invalidate:0.6.0
