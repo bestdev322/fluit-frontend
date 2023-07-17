@@ -22,9 +22,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build --no-eslint",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off"
   },
   "eslintConfig": {
     "extends": [
