@@ -1,0 +1,76 @@
+#  Template React Deploy
+
+#  This template allows you to deploy your React app to an AWS S3 bucket and invalidate the old AWS Cloudfront distribution.
+#  The workflow allows running tests, code linting and security scans on feature branches (as well as master).
+#  The react app will be validated, deployed to S3 and trigger an AWS Cloudfront distribution invalidation to refresh the CDN caches after the code is merged to master.
+
+# Prerequisites: $AWS_ACCESS_KEY_ID, $AWS_SECRET_ACCESS_KEY setup in the Deployment variables.
+# For advanced cases, please, follow examples from the pipe's:
+# README https://bitbucket.org/atlassian/aws-s3-deploy/src/master/README.md
+# README https://bitbucket.org/atlassian/aws-cloudfront-invalidate/src/master/README.md
+
+image: node:16
+
+# Workflow Configuration
+
+pipelines:
+  default:
+    - parallel:
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm install
+            # CI=true in default variables for Bitbucket Pipelines https://support.atlassian.com/bitbucket-cloud/docs/variables-in-pipelines/
+            - npm test
+      - step:
+          name: Lint the node package
+          script:
+            # Run your linter of choice here
+            - npm install eslint
+            - npx eslint src
+          caches:
+            - node
+  branches:
+    master:
+      - parallel:
+        - step:
+            name: Build and Test
+            caches:
+              - node
+            script:
+              - npm install
+              # CI=true in default variables for Bitbucket Pipelines https://support.atlassian.com/bitbucket-cloud/docs/variables-in-pipelines/
+              - npm test
+              - npm run build
+            artifacts:
+              - build/**
+        - step:
+            name: Security Scan
+            script:
+              # Run a security scan for sensitive data.
+              # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
+              - pipe: atlassian/git-secrets-scan:0.5.1
+      - step:
+          name: Deploy to Production
+          deployment: Production
+          trigger: manual
+          clone:
+            enabled: false
+          script:
+            # sync your files to S3
+            - pipe: atlassian/aws-s3-deploy:1.1.0
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                S3_BUCKET: 'my-bucket-name'
+                LOCAL_PATH: 'build'
+            # triggering a distribution invalidation to refresh the CDN caches
+            - pipe: atlassian/aws-cloudfront-invalidate:0.6.0
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                DISTRIBUTION_ID: '123xyz'
