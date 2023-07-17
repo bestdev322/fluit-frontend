@@ -1,0 +1,37 @@
+body{
+   background: url('../../assets/images/background-login.png') no-repeat ;
+   background-size: cover;
+}
+
+.loginBox{    
+   text-align: center;
+}
+
+.loginBox .logo{    
+   width: 150px;
+}
+
+.loginBox .ant-input{
+   height: 40px;
+   width: 250px;
+}
+
+.loginBox .submit{
+   background-color: var(--orange-300);
+   border: 1px solid var(--black-0);
+   width: 150px;
+   height: auto;
+}
+
+
+.loginBox .submit:hover,.loginBox .submit:active{
+   text-decoration: none;
+   color: var(--black-0);
+   border: 1px solid var(--black-0);
+}
+
+
+.rowLogin{
+   
+   height: 100vh;
+}
