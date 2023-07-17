@@ -1,4 +1,4 @@
-import { Badge, Breadcrumb,  Card, Col,  Progress, RadioChangeEvent, Row, Table, Tabs, Typography } from 'antd';
+import { Badge, Breadcrumb,  Card, Col,  Progress,  Row, Table, Tabs, Typography } from 'antd';
 
 import './ewpPage.scss';
 import Layout from '../../components/Template/Layout';
@@ -12,7 +12,7 @@ const { Text } = Typography;
 function EwpPage() {
 
   const [size, setSize] = useState<SizeType>('small');
-
+  setSize('small');
   // const onChange = (e: RadioChangeEvent) => {
   //   setSize(e.target.value);
   // };
@@ -185,10 +185,10 @@ function EwpPage() {
                   title: 'Home',
                 },
                 {
-                  title: <a href="">KN-N1344-290 - N2 - Mina - Geral</a>,
+                  title: <a href="#">KN-N1344-290 - N2 - Mina - Geral</a>,
                 },
                 {
-                  title: <a href="">KN-N1344-290-M-EM-0001</a>,
+                  title: <a href="#">KN-N1344-290-M-EM-0001</a>,
                 }                
               ]}
             />
