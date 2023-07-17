@@ -1,5 +1,4 @@
-import { Badge, Button, Card, Col, Dropdown, Image, Input, Row, Space, Table, TableColumnsType, Typography } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { Badge,  Card, Col, Row, Table, TableColumnsType, Typography } from 'antd';
 import './cwaPage.scss';
 import Layout from '../../components/Template/Layout';
 import { ReactNode } from 'react';

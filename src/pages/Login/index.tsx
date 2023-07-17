@@ -1,5 +1,5 @@
-import { Button, Col, Image, Input, Row, Space, Typography } from 'antd';
-import React from 'react';
+import { Button, Col, Image, Input, Row, Typography } from 'antd';
+
  
 import './login.scss';
 import logo from '../../assets/images/logo-fluit.png';

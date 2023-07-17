@@ -1,4 +1,4 @@
-import { Avatar, Breadcrumb, Button, Col, Image, Input, Layout, Row, Space, Typography } from 'antd';
+import { Avatar,  Col, Image, Input, Layout, Row,  Typography } from 'antd';
 import './header.scss';
 import logo from '../../../assets/images/logo-fluit.png';
 import { BiSolidHome } from 'react-icons/bi';
@@ -7,7 +7,7 @@ import { FaBars } from 'react-icons/fa';
 
 const { Text } = Typography;
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 function HeaderSystem() {
     return (
