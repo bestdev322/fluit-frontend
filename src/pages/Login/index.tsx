@@ -3,7 +3,7 @@ import { Button, Col, Image, Input, Row, Typography } from 'antd';
  
 import './login.scss';
 import logo from '../../assets/images/logo-fluit.png';
-import { Link } from 'react-router-dom';
+
 const { Text } = Typography;
 function App() {
   return (

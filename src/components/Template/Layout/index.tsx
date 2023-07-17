@@ -1,4 +1,4 @@
-import {  Col,  Row,Typography } from 'antd';
+import {  Col,  Row } from 'antd';
 import './layout.scss';
 import Header from '../Header';
 

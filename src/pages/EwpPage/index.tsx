@@ -1,8 +1,8 @@
-import { Badge, Breadcrumb, Button, Card, Col, Dropdown, Image, Input, Progress, RadioChangeEvent, Row, Space, Table, TableColumnsType, Tabs, Typography } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { Badge, Breadcrumb,  Card, Col,  Progress, RadioChangeEvent, Row, Table, Tabs, Typography } from 'antd';
+
 import './ewpPage.scss';
 import Layout from '../../components/Template/Layout';
-import { ReactNode, useState } from 'react';
+import {  useState } from 'react';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
 
 const { Text } = Typography;
@@ -13,9 +13,9 @@ function EwpPage() {
 
   const [size, setSize] = useState<SizeType>('small');
 
-  const onChange = (e: RadioChangeEvent) => {
-    setSize(e.target.value);
-  };
+  // const onChange = (e: RadioChangeEvent) => {
+  //   setSize(e.target.value);
+  // };
 
   const dataSource = [
     {
