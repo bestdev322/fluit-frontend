@@ -185,10 +185,10 @@ function EwpPage() {
                   title: 'Home',
                 },
                 {
-                  title: <a href="#">KN-N1344-290 - N2 - Mina - Geral</a>,
+                  title: <a href="/a">KN-N1344-290 - N2 - Mina - Geral</a>,
                 },
                 {
-                  title: <a href="#">KN-N1344-290-M-EM-0001</a>,
+                  title: <a href="/b">KN-N1344-290-M-EM-0001</a>,
                 }                
               ]}
             />
