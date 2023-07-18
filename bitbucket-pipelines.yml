@@ -11,7 +11,8 @@ pipelines:
             - export BRANCH=$BITBUCKET_BRANCH
             - export BUCKET_NAME=${BRANCH}-app.verum.digital       
             # Faz o deploy dos arquivos para o bucket S3 da AWS
-            - apt-get update && apt-get install -y python3-pip
+            - apt-get update -y && apt-get upgrade -y 
+            - apt-get install -y python3-pip
             - pip3 install awscli
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
