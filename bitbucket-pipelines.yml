@@ -26,9 +26,11 @@ pipelines:
   branches:
     master:
       - step:
-          name: Deploy to STG
+          name: Deploy to master
+          caches:
+                - pip                
           script:
-            - echo "Deploy to STG" 
+            - echo "Deploy to STG"             
             # Instala as dependÍncias e faz o build
             - npm install
             - npm run build
@@ -36,10 +38,11 @@ pipelines:
 
             # Faz o deploy dos arquivos para o bucket S3 da AWS
             - apt-get update && apt-get install -y python3-pip
+            - pip install --upgrade pip  
             - pip3 install awscli
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            - aws s3 sync build/ s3://stg-app.verum.digital
+            - aws s3 sync build/ s3://master-app.verum.digital
       - step:
           name: Deploy to production
           trigger: manual
