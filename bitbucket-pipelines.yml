@@ -11,9 +11,11 @@ pipelines:
             - export BRANCH=$BITBUCKET_BRANCH
             - export BUCKET_NAME=${BRANCH}-app.verum.digital       
             # Faz o deploy dos arquivos para o bucket S3 da AWS
-            - apt-get update -y && apt-get upgrade -y 
-            - apt-get install -y python3-pip
-            - pip3 install awscli
+            - apt-get update && apt-get install -y curl unzip
+            - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
+            - unzip awscliv2.zip
+            - ./aws/install 
+            - aws --version
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             #cria o bucket e aplica as configuracoes necessarias
@@ -26,7 +28,7 @@ pipelines:
   branches:
     master:
       - step:
-          name: Deploy to master
+          name: Deploy to stg
           caches:
                 - pip                
           script:
@@ -37,12 +39,14 @@ pipelines:
             #- aws s3api create-bucket --bucket nome-do-seu-bucket --region us-west-2
 
             # Faz o deploy dos arquivos para o bucket S3 da AWS
-            - apt-get update && apt-get install -y python3-pip
-            - pip install --upgrade pip  
-            - pip3 install awscli
+            - apt-get update && apt-get install -y curl unzip
+            - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
+            - unzip awscliv2.zip
+            - ./aws/install 
+            - aws --version
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            - aws s3 sync build/ s3://master-app.verum.digital
+            - aws s3 sync build/ s3://stg-app.verum.digital
       - step:
           name: Deploy to production
           trigger: manual
@@ -54,8 +58,11 @@ pipelines:
             #- aws s3api create-bucket --bucket nome-do-seu-bucket --region us-west-2
 
             # Faz o deploy dos arquivos para o bucket S3 da AWS
-            - apt-get update && apt-get install -y python3-pip
-            - pip3 install awscli
+            - apt-get update && apt-get install -y curl unzip
+            - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
+            - unzip awscliv2.zip
+            - ./aws/install 
+            - aws --version
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             - aws s3 sync build/ s3://app.verum.digital
