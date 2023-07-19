@@ -23,7 +23,7 @@ pipelines:
             - aws s3 website s3://$BUCKET_NAME --index-document index.html --error-document error.html
             - echo '{"Version":"2012-10-17","Statement":[{"Sid":"AllowPublicReadAccess","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::${BUCKET_NAME}/*"}]}' > policy.json
             - aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy policy.json
-            - aws s3 sync build/ s3://$BUCKET_NAME
+            - aws s3 sync build/ s3://$BUCKET_NAME --delete
 
   branches:
     master:
@@ -45,10 +45,8 @@ pipelines:
             - ./aws/install 
             - aws --version
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            - echo '{"Version":"2012-10-17","Statement":[{"Sid":"AllowPublicReadAccess","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::${BUCKET_NAME}/*"}]}' > policy.json
-            - aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy policy.json
-            - aws s3 sync build/ s3://stg-app.verum.digital
+            - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY            
+            - aws s3 sync build/ s3://stg-app.verum.digital --delete
       - step:
           name: Deploy to production
           trigger: manual
@@ -67,6 +65,4 @@ pipelines:
             - aws --version
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            - echo '{"Version":"2012-10-17","Statement":[{"Sid":"AllowPublicReadAccess","Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::${BUCKET_NAME}/*"}]}' > policy.json
-            - aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy policy.json
-            - aws s3 sync build/ s3://app.verum.digital
+            - aws s3 sync build/ s3://app.verum.digital --delete
