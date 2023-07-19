@@ -1,4 +1,4 @@
-import { Badge, Breadcrumb,  Card, Col,  Progress,  Row, Table, Tabs, Typography } from 'antd';
+import { Badge, Breadcrumb,  Card, Col,  Progress,  RadioChangeEvent,  Row, Table, Tabs, Typography } from 'antd';
 
 import './ewpPage.scss';
 import Layout from '../../components/Template/Layout';
@@ -7,15 +7,14 @@ import { SizeType } from 'antd/es/config-provider/SizeContext';
 
 const { Text } = Typography;
 
-
-
 function EwpPage() {
 
   const [size, setSize] = useState<SizeType>('small');
-  setSize('small');
-  // const onChange = (e: RadioChangeEvent) => {
-  //   setSize(e.target.value);
-  // };
+  
+  
+  const onChange = (e: RadioChangeEvent) => {
+    setSize(e.target.value);
+  };
 
   const dataSource = [
     {
@@ -200,8 +199,6 @@ function EwpPage() {
                 items={items}
                 className='mt-3 fluit-tabs'
               />
-
-
 
               <Tabs
                 defaultActiveKey="1"

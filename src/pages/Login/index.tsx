@@ -3,6 +3,7 @@ import { Button, Col, Image, Input, Row, Typography } from 'antd';
  
 import './login.scss';
 import logo from '../../assets/images/logo-fluit.png';
+import { Link } from 'react-router-dom';
 
 const { Text } = Typography;
 function App() {
@@ -23,7 +24,9 @@ function App() {
         </Col>
         
         <Col span={24}>
-          <Button className='submit pt-1 pb-1'>Entrar</Button>
+          <Link to="/cwa">
+            <Button className='submit pt-1 pb-1' >Entrar</Button>
+          </Link>
         </Col>
 
         <Col span={24} className='mt-1'>

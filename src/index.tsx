@@ -17,6 +17,7 @@ import reportWebVitals from './reportWebVitals';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
+      <Route path="/" element={<Login />} />
       <Route path="login" element={<Login />} />
       <Route path="cwa" element={<CwaPage />} />
       <Route path="ewp" element={<EwpPage />} />
