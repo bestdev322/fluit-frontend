@@ -2,7 +2,7 @@ import { Badge, Breadcrumb,  Card, Col,  Progress,  RadioChangeEvent,  Row, Tabl
 
 import './ewpPage.scss';
 import Layout from '../../components/Template/Layout';
-import {  useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
 
 const { Text } = Typography;
@@ -11,10 +11,8 @@ function EwpPage() {
 
   const [size, setSize] = useState<SizeType>('small');
   
-  
-  const onChange = (e: RadioChangeEvent) => {
-    setSize(e.target.value);
-  };
+
+
 
   const dataSource = [
     {
