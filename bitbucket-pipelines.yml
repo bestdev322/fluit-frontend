@@ -36,8 +36,6 @@ pipelines:
             # Instala as dependÍncias e faz o build
             - npm install
             - npm run build
-            #- aws s3api create-bucket --bucket nome-do-seu-bucket --region us-west-2
-
             # Faz o deploy dos arquivos para o bucket S3 da AWS
             - apt-get update && apt-get install -y curl unzip
             - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
@@ -47,6 +45,7 @@ pipelines:
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY            
             - aws s3 sync build/ s3://stg-app.verum.digital --delete
+            - aws cloudfront create-invalidation --distribution-id E3IGKST1D8BS50 --paths "/*"
       - step:
           name: Deploy to production
           trigger: manual
@@ -66,3 +65,4 @@ pipelines:
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             - aws s3 sync build/ s3://app.verum.digital --delete
+            - aws cloudfront create-invalidation --distribution-id E1ID86DH2ID5Z5 --paths "/*"
