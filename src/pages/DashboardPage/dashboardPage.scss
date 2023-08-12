@@ -1,0 +1,19 @@
+.dashboard-menu{
+    border: 1px solid rgb(245, 106, 0);
+    padding: 36px 6px;
+    border-radius: 6px;
+    color: rgb(245, 106, 0);
+
+    span{
+        color: rgb(245, 106, 0)
+    }
+
+    &:hover{
+        cursor: pointer;
+        color: #ffffff;
+        background-color: rgb(245, 106, 0);
+        span{
+            color: #ffffff;
+        }
+    }
+}

@@ -1,10 +1,8 @@
-import { Badge,  Button,  Card, Col, Row, Table, TableColumnsType, Typography } from 'antd';
+import { Badge,  Card, Col, Row, Table, TableColumnsType, Typography } from 'antd';
 import './cwaPage.scss';
 import Layout from '../../components/Template/Layout';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import Entrega from '../../components/Entrega';
-import api from '../../services/Api';
-import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
@@ -24,15 +22,9 @@ const { Text } = Typography;
   }
 
 function CwaPage() { 
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [current, setCurrent] = useState(3);
-  const [total, setTotal] = useState(0);
-  const [dataTable, setDataTable] = useState();
-  const [pageSize, setPageSize] = useState(0);
-  const navigate = useNavigate();
   
-    const expandedRowRender = (record :any , index :any , indent:any , expanded:any ): ReactNode => {      
+    const expandedRowRender = (record :any , index :any , indent:any , expanded:any ): ReactNode => {
+      // console.log(record, index, indent, expanded)
       const columns: TableColumnsType<ExpandedDataType> = [
         { title: 'Nome', dataIndex: 'name', key: 'name' },
         { title: 'Área', dataIndex: 'area', key: 'area' },
@@ -55,46 +47,69 @@ function CwaPage() {
           subdisciplina: 'Terraplanagem',
           state: <Badge status="success" text="Finalizado" />,
         },
-      
+        {
+          key: 2,
+          name: 'KN-N1344-290-B-BT-0001',
+          area: 'Geral',
+          disciplina: 'Infra',
+          subdisciplina: 'Terraplanagem',
+          state: <Badge status="success" text="Finalizado" />,
+        },
+        {
+          key: 3,
+          name: 'KN-N1344-290-M-EM-0001',
+          area: 'Geral',
+          disciplina: 'Infra',
+          subdisciplina: 'Terraplanagem',
+          state: <Badge status="processing" text="Em andamento" />,
+        },
+        {
+          key: 4,
+          name: 'KN-N1344-290-E-BD-0001',
+          area: 'Geral',
+          disciplina: 'Infra',
+          subdisciplina: 'Terraplanagem',
+          state: <Badge status="warning" text="Não iniciado" />,
+        }
 
       ];
       
       return <Table columns={columns} dataSource={data} pagination={false} />;
     };
-
-    useEffect( () => {
-      api.get("http://localhost/api/v1/projects/"+1+"/cwas")
-      .then((response) => {
-        if(response.status === 200){
-          const data = response.data.data;
-          console.log(data)
-          const table = data.map( (obj:any) => ({
-            ...obj,
-            key: obj.id,
-            actions: <>
-              <Button type="primary" onClick={() => navigate("/cwas/"+obj.id)}>
-                Abrir
-              </Button>
-            </> 
-          }));
-
-          setDataTable(table);                   
-          setTotal(data.total)
-          setPageSize(data.per_page)
-          setIsLoading(false);
-        }
-
-      });
-
-    }, []); 
   
     const columns: TableColumnsType<DataType> = [
-      { title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code' },      
+      { title: 'Nome', dataIndex: 'name', key: 'name' },      
       { title: 'Descrição', dataIndex: 'description', key: 'description' },
-          
     ];
   
-  
+    const data: DataType[] = [
+      {
+        key: 1,
+        name: 'KN-N1344-290',
+        description: 'N2 - Mina - Geral',        
+      },
+      {
+        key: 2,
+        name: 'KN-N1344-330',
+        description: 'TR-1391KN-01 - Região 3 (N1-N2 plano) - Geral',        
+      },
+      {
+        key: 3,
+        name: 'KN-N1344-400',
+        description: 'TR-1391KN-02 - Geral - Geral',        
+      },
+      {
+        key: 4,
+        name: 'KN-N1344-500',
+        description: 'TR-1391KN-03 - Geral - Geral',        
+      },
+      {
+        key: 5,
+        name: 'KN-N1344-711',
+        description: 'TR-1391KN-05/06 - Região 1 - Parte 1 (CT)',        
+      },
+    
+    ];
     
 
   return (
@@ -112,7 +127,7 @@ function CwaPage() {
               className='table-cwa'
               columns={columns}
               expandable={{ expandedRowRender }}
-              dataSource={dataTable}
+              dataSource={data}
             />
           </Col>
         </Row>
@@ -120,7 +135,7 @@ function CwaPage() {
       </Card>
      </Layout>
 
-     
+     <Entrega />
     </>
     
   );

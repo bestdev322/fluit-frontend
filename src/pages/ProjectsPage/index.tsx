@@ -1,9 +1,12 @@
 import { Badge,  Button,  Card, Col, Row, Table, TableColumnsType, Typography } from 'antd';
-import './cwaPage.scss';
+import './projectsPage.scss';
 import Layout from '../../components/Template/Layout';
 import { ReactNode, useEffect, useState } from 'react';
-import Entrega from '../../components/Entrega';
 import api from '../../services/Api';
+
+import type { PaginationProps } from 'antd';
+import { Pagination } from 'antd';
+import { AnyARecord } from 'dns';
 import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
@@ -23,51 +26,25 @@ const { Text } = Typography;
     state: Object;
   }
 
-function CwaPage() { 
-
+function ProjectsPage() { 
   const [isLoading, setIsLoading] = useState(true);
   const [current, setCurrent] = useState(3);
   const [total, setTotal] = useState(0);
   const [dataTable, setDataTable] = useState();
   const [pageSize, setPageSize] = useState(0);
   const navigate = useNavigate();
-  
-    const expandedRowRender = (record :any , index :any , indent:any , expanded:any ): ReactNode => {      
-      const columns: TableColumnsType<ExpandedDataType> = [
-        { title: 'Nome', dataIndex: 'name', key: 'name' },
-        { title: 'Área', dataIndex: 'area', key: 'area' },
-        { title: 'Disciplina', dataIndex: 'disciplina', key: 'disciplina' },
-        { title: 'Subdisciplina', dataIndex: 'subdisciplina', key: 'subdisciplina' },
-        {
-          title: 'Status',
-          dataIndex: 'state',
-          key: 'state',
-          
-        },        
-      ];
-  
-      const data = [
-        {
-          key: 1,          
-          name: 'KN-N1344-290-B-BT-0001',
-          area: 'Geral',
-          disciplina: 'Infra',
-          subdisciplina: 'Terraplanagem',
-          state: <Badge status="success" text="Finalizado" />,
-        },
-      
 
-      ];
-      
-      return <Table columns={columns} dataSource={data} pagination={false} />;
-    };
-
+const onChange: PaginationProps['onChange'] = (page) => {
+  console.log(page);
+  setCurrent(page);
+};
+ 
     useEffect( () => {
-      api.get("http://localhost/api/v1/projects/"+1+"/cwas")
+      api.get("http://localhost/api/v1/projects/all")
       .then((response) => {
         if(response.status === 200){
           const data = response.data.data;
-          console.log(data)
+
           const table = data.map( (obj:any) => ({
             ...obj,
             key: obj.id,
@@ -87,16 +64,13 @@ function CwaPage() {
       });
 
     }, []); 
-  
+
     const columns: TableColumnsType<DataType> = [
-      { title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code' },      
+      { title: 'Nome', dataIndex: 'name', key: 'name' },      
       { title: 'Descrição', dataIndex: 'description', key: 'description' },
-          
+      { title: '', dataIndex: 'actions', key: 'actions' },      
     ];
   
-  
-    
-
   return (
     <>
      <Layout>
@@ -105,25 +79,26 @@ function CwaPage() {
           <Text className='project-title'> Projeto A</Text>
         </Col>
       </Row>
-      <Card size="small" title="CWA - Áreas do Projeto" extra={''} style={{ width: 1270 }}>
+      <Card size="small" title="Projetos" extra={''} style={{ width: 1270 }}>
         <Row>
           <Col span={24}>
             <Table
-              className='table-cwa'
-              columns={columns}
-              expandable={{ expandedRowRender }}
+              className='table-projects'
+              columns={columns}              
               dataSource={dataTable}
+              pagination={false}
+              loading={isLoading}
             />
           </Col>
-        </Row>
-        
-      </Card>
-     </Layout>
 
-     
+          <Col span={24} className='text-center mt-4'>
+            <Pagination current={current} onChange={onChange} total={total} simple={false} showSizeChanger={false} />
+          </Col>          
+        </Row> 
+      </Card>
+     </Layout>     
     </>
-    
   );
 }
 
-export default CwaPage;
+export default ProjectsPage;
