@@ -28,7 +28,7 @@ function App() {
   };
 
   const handleFormSubmit = ()=> {
-    api.post("http://localhost/api/v1/login", //ver como ler do .env
+    api.post("/v1/login", //ver como ler do .env
     {
       email: userEmail,
       password: userPassword

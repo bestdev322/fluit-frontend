@@ -40,7 +40,7 @@ const onChange: PaginationProps['onChange'] = (page) => {
 };
  
     useEffect( () => {
-      api.get("http://localhost/api/v1/projects/all")
+      api.get("/v1/projects/all")
       .then((response) => {
         if(response.status === 200){
           const data = response.data.data;

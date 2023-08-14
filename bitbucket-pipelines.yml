@@ -51,6 +51,7 @@ pipelines:
           trigger: manual
           script:
             - echo "Deploying to production"
+            - echo "REACT_APP_API_HOST=${REACT_APP_API_HOST}" >> .env
             # Instala as dependÍncias e faz o build
             - npm install
             - npm run build
