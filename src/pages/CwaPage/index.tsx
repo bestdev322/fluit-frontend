@@ -117,6 +117,7 @@ function CwaPage() {
               expandable={{ expandedRowRender }}
               dataSource={dataTable}
               loading={fetchingData}
+              locale={{ emptyText: 'Sem dados' }}
             />
           </Col>
         </Row>

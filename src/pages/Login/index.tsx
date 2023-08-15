@@ -38,9 +38,12 @@ function App() {
   )
   .then((response) => {
 
-    localStorage.setItem('access_token', JSON.stringify(response.data.plainTextToken));    
-    window.location.href = "/dashboard";
-
+    if(response.status === 200){
+      
+      localStorage.setItem('access_token', JSON.stringify(response.data.plainTextToken));    
+      window.location.href = "/dashboard";
+      
+    }
   })
   .catch(error => {
     if (error.response && error.response.status === 401) {

@@ -88,6 +88,7 @@ const onChange: PaginationProps['onChange'] = (page) => {
               dataSource={dataTable}
               pagination={false}
               loading={isLoading}
+              locale={{ emptyText: 'Sem dados' }}
             />
           </Col>
 

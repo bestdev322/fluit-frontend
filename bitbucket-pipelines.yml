@@ -9,7 +9,8 @@ pipelines:
             - npm install
             - npm run build
             - export BRANCH=$BITBUCKET_BRANCH
-            - export BUCKET_NAME=${BRANCH}-app.verum.digital       
+            - export BUCKET_NAME=${BRANCH}-app.verum.digital 
+               
             # Faz o deploy dos arquivos para o bucket S3 da AWS
             - apt-get update && apt-get install -y curl unzip
             - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
@@ -34,6 +35,8 @@ pipelines:
           script:
             - echo "Deploy to STG"             
             # Instala as dependÍncias e faz o build
+            - echo "REACT_APP_API_HOST=${REACT_APP_API_HOST}" >> .env
+            - export REACT_APP_API_HOST=${REACT_APP_API_HOST} 
             - npm install
             - npm run build
             # Faz o deploy dos arquivos para o bucket S3 da AWS
@@ -52,6 +55,7 @@ pipelines:
           script:
             - echo "Deploying to production"
             - echo "REACT_APP_API_HOST=${REACT_APP_API_HOST}" >> .env
+            - export REACT_APP_API_HOST=${REACT_APP_API_HOST} 
             # Instala as dependÍncias e faz o build
             - npm install
             - npm run build
