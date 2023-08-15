@@ -30,6 +30,7 @@ pipelines:
     master:
       - step:
           name: Deploy to stg
+          deployment: staging
           caches:
                 - pip                
           script:
@@ -54,6 +55,7 @@ pipelines:
       - step:
           name: Deploy to production
           trigger: manual
+          deployment: production
           script:
             - echo "Deploying to production"
             - echo "REACT_APP_API_HOST=${REACT_APP_API_HOST}" >> .env
