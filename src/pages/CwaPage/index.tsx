@@ -65,7 +65,7 @@ function CwaPage() {
 
     useEffect( () => {
       setFetchingData(true)
-      api.get("http://localhost/api/v1/projects/"+1+"/cwas")
+      api.get("/v1/projects/"+1+"/cwas")
       .then((response) => {
         if(response.status === 200){
           const data = response.data.data;
