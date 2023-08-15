@@ -29,6 +29,7 @@ function CwaPage() {
   const [current, setCurrent] = useState(3);
   const [total, setTotal] = useState(0);
   const [dataTable, setDataTable] = useState();
+  const [fetchingData, setFetchingData] = useState(false);
   const [pageSize, setPageSize] = useState(0);
   const navigate = useNavigate();
   
@@ -63,6 +64,7 @@ function CwaPage() {
     };
 
     useEffect( () => {
+      setFetchingData(true)
       api.get("http://localhost/api/v1/projects/"+1+"/cwas")
       .then((response) => {
         if(response.status === 200){
@@ -82,6 +84,7 @@ function CwaPage() {
           setTotal(data.total)
           setPageSize(data.per_page)
           setIsLoading(false);
+          setFetchingData(false)
         }
 
       });
@@ -113,6 +116,7 @@ function CwaPage() {
               columns={columns}
               expandable={{ expandedRowRender }}
               dataSource={dataTable}
+              loading={fetchingData}
             />
           </Col>
         </Row>

@@ -12,6 +12,7 @@ const { Text } = Typography;
 function App() {
   
   const [userEmail, setUserEmail] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [userPassword, setUserPassword] = useState();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
@@ -28,6 +29,7 @@ function App() {
   };
 
   const handleFormSubmit = ()=> {
+    setIsLoading(true);
     api.post("/v1/login", //ver como ler do .env
     {
       email: userEmail,
@@ -37,7 +39,7 @@ function App() {
   .then((response) => {
 
     localStorage.setItem('access_token', JSON.stringify(response.data.plainTextToken));    
-    window.location.href = "/cwa";
+    window.location.href = "/dashboard";
 
   })
   .catch(error => {
@@ -46,6 +48,7 @@ function App() {
     } else {
       setErrorMessage('Ocorreu um erro ao processar a solicitação, tente novamente mais tarde.'); // Mensagem de erro padrão
     }
+    setIsLoading(false);
   });
   
   }
@@ -75,7 +78,7 @@ function App() {
           
         <Col span={24}>
           
-            <Button className='submit pt-1 pb-1' onClick={handleFormSubmit}>Entrar</Button>
+            <Button className='submit pt-1 pb-1' onClick={handleFormSubmit} loading={isLoading}>Entrar</Button>
           
         </Col>
 

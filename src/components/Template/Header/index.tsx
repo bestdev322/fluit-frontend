@@ -4,20 +4,22 @@ import logo from '../../../assets/images/logo-fluit.png';
 import { BiSolidHome } from 'react-icons/bi';
 import { VscGraph } from 'react-icons/vsc';
 import { FaBars } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
 const { Content } = Layout;
 
 function HeaderSystem() {
+    const navigate = useNavigate();
     return (
         <Content className="site-layout " style={{  width: '1270px', margin: '0 auto' }}  >
             <Row justify={'space-between'} align={'middle'} >
                 <Col span={3}>
-                    <Image src={logo} preview={false} className='logo mt-4 mb-4' />
+                    <Image src={logo} preview={false} className='logo mt-4 mb-4' onClick={() => navigate("/dashboard/")} />
                 </Col>
                 <Col span={1}>
-                    <BiSolidHome size={25}/>
+                    <BiSolidHome size={25} onClick={() => navigate("/dashboard/")} />
                 </Col>
                 <Col span={15}>
                     <Input className='search' placeholder='Pesquisar CWAs' />
