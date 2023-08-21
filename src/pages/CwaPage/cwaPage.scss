@@ -1,6 +1,90 @@
+.project-title {
+    color: var(--orange-700) !important;
+
+}
 
 
-.project-title{
-    color: "var(--orange-700)" !important;
+.table-cwa {
+    width: 100%;
+    // height: 616px;
+    border: 1px solid var(--gray-400);
+    border-radius: 10px;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
 
+    .ant-table-thead {
+        tr td:first-child {
+            padding: 5px;
+            padding-left: 50px;
+            text-align: left;
+            border-bottom-left-radius: 10px;
+            background-color: var(--gray-300);
+        }
+
+        tr th:last-child {
+            padding: 5px;
+            text-align: left;
+            border-bottom-right-radius: 10px;
+        }
+
+        tr th {
+            background-color: var(--gray-300);
+        }
+    }
+}
+
+.measure-modal {
+    right: 40px;
+    float: right;
+
+    .ant-modal-content {
+        padding: 0px;
+        border-radius: 10px 10px;
+
+        .ant-modal-body {
+            border-radius: 10px 10px;
+            overflow: hidden;
+            border: 1px solid var(--orange-400);
+            border-radius: 10px 10px;
+
+            .measure-modal-header {
+                background-color: var(--orange-300);
+                font-weight: bold;
+                padding: 3px 20px;
+            }
+
+            .measure-modal-sub-header {
+                background-color: var(--orange-100);
+                padding: 5px 0px;
+
+                .modal-name {
+                    padding: 0px 20px;
+                }
+
+                .modal-description {
+                    padding: 0px 50px;
+                }
+            }
+
+            .modal-body {
+                padding: 0px 15px;
+
+                .upload-cloud-btn .ant-upload-select {
+                    height: 30px;
+                    width: 80%;
+                }
+
+                .uploaded-file-list {
+                    .ant-upload-list-item {
+                        margin-top: 0px;
+                    }
+
+                    .ant-upload-list {
+                        min-height: 90px;
+                    }
+                }
+            }
+        }
+    }
 }

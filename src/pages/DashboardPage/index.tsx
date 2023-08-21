@@ -22,7 +22,7 @@ function DashboardPage() {
                 <AiOutlineDatabase size={'4em'}/>
               </Col>
               <Col className='text-center'>
-                <Text >Projetos</Text>
+                <Text>Projetos</Text>
               </Col>
             </Col>
           </Row>
