@@ -248,9 +248,9 @@ function CwaPage() {
             <Text className='project-title'> Projeto A</Text>
           </Col>
         </Row>
-        <Card size="small" title="CWA - Áreas do Projeto" extra={''} style={{ width: 1270 }}>
+        <Card size="small" title="CWA - Áreas do Projeto" extra={''}>
           <Row>
-            <Col span={24}>
+            <Col span={24} style={{overflow: 'auto'}}>
               <Table
                 className='table-cwa'
                 columns={columns}
@@ -260,6 +260,7 @@ function CwaPage() {
                 loading={fetchingData}
                 locale={{ emptyText: 'Sem dados' }}
                 size='small'
+                style={{minWidth: '600px'}}
               />
             </Col>
           </Row>

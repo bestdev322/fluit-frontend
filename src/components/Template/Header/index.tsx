@@ -13,34 +13,22 @@ const { Content } = Layout;
 function HeaderSystem() {
     const navigate = useNavigate();
     return (
-        <Content className="site-layout " style={{  width: '1270px', margin: '0 auto' }}  >
-            <Row justify={'space-between'} align={'middle'} >
-                <Col span={3}>
+        <Content className="site-layout header-layout" style={{ margin: '0 auto' }}  >
+            <Row className='header-row' align={'middle'} >
+                <Col>
                     <Image src={logo} preview={false} className='logo mt-4 mb-4' onClick={() => navigate("/dashboard/")} />
                 </Col>
-                <Col span={1}>
-                    <BiSolidHome size={25} onClick={() => navigate("/dashboard/")} />
-                </Col>
-                <Col span={15}>
+                <Col span={15} className='search-desktop'>
                     <Input className='search' placeholder='Pesquisar CWAs' />
                 </Col>
-                <Col>
+                <Col style={{display:'flex', alignItems:'center', gap: '5px'}}>
                     <VscGraph size={25}/>
-                </Col>
-                <Col>
                     <FaBars size={25}/>
-                </Col>
-                <Col>
                     <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>DZ</Avatar>
-                </Col>
-                <Col>
                     <Text>Danilo Zeni</Text>
                 </Col>
             </Row>
-            
         </Content>
-
-
     );
 }
 

@@ -1,5 +1,10 @@
-.logo{
-    width:140px !important;
+$sm: 540px;
+$md: 720px;
+$lg: 960px;
+
+
+.logo {
+    width: 140px !important;
 }
 
 .search,
@@ -13,3 +18,25 @@
     padding: 10px 15px 8px;
 }
 
+
+.search-desktop {
+    display: none;
+    input {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.19);
+    }
+    @media screen and (min-width: $lg) {
+        display: block;
+    }
+}
+
+.header-layout {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.header-row {
+    justify-content: space-between;
+    @media screen and (max-width: 410px) {
+        justify-content: center;
+    }
+}
