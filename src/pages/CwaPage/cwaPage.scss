@@ -1,3 +1,5 @@
+@import '../../assets/css/config.scss';
+
 .project-title {
     color: var(--orange-700) !important;
 
@@ -38,7 +40,7 @@
     right: 40px;
     float: right;
 
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: $sm) {
         right: 0px;
     }
 
@@ -82,7 +84,7 @@
                     }
 
                     button {
-                        @media screen and (max-width: 455px) {
+                        @media screen and (max-width: $sm) {
                             width: 100px;
                             text-overflow: ellipsis;
                             overflow: hidden;
@@ -106,7 +108,7 @@
                     overflow: hidden;
                     white-space: nowrap;
 
-                    @media screen and (max-width: 455px) {
+                    @media screen and (max-width: $sm) {
                         width: 80px;
                     }
                 }
