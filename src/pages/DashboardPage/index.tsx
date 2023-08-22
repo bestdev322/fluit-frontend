@@ -15,9 +15,9 @@ function DashboardPage() {
   return (
     <>
       <Layout>    
-        <Card size="small" title="Dashboard" extra={''} style={{ width: 1270 }}>
+        <Card size="small" title="Dashboard" extra={''}>
           <Row align={'middle'} className='mt-4 mb-6'>
-            <Col sm={4} className='dashboard-menu' onClick={() => navigate("/projects")}>
+            <Col className='dashboard-menu' onClick={() => navigate("/projects")}>
               <Col className='text-center'>
                 <AiOutlineDatabase size={'4em'}/>
               </Col>

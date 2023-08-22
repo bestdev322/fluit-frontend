@@ -10,7 +10,7 @@ function Layout(props: any) {
       
         <Header />
         <Row>
-          <Col className='' style={{ width: '1270px', margin: '0 auto' }} >            
+          <Col className='layout-container'>            
             {props.children}          
           </Col>
         </Row>
