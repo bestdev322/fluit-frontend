@@ -277,7 +277,7 @@ function CwaPage() {
                 <Col className='modal-name' span={24}>KN-N1344-290-M-EM-0001</Col>
               </Row>
               <Row>
-                <Col className='modal-description' span={24}>Montar equipamentos mecânicos - CH-1290KN-01</Col>
+                <Col className='modal-description text-ellipsis' span={24}>Montar equipamentos mecânicos - CH-1290KN-01</Col>
               </Row>
             </Col>
           </Row>
@@ -299,9 +299,7 @@ function CwaPage() {
                   </Upload>
                 </Col>
                 <Col span={12} style={{ textAlign: 'center' }}>
-                  <Button onClick={handleUpload}
-                    disabled={fileList.length === 0}
-                    loading={uploading} type="primary">Submeter para aprovação</Button>
+                  <Button onClick={handleUpload} className='modal-upload-button' disabled={fileList.length === 0} loading={uploading} type="primary">Submeter para aprovação</Button>
                 </Col>
               </Row>
               <Divider orientation="left" style={{ margin: '0px' }} plain>
@@ -312,8 +310,8 @@ function CwaPage() {
                 Histórico
               </Divider>
               <div style={{ minHeight: '100px', paddingLeft: '30px' }}>
-                <div>03/05/2023 às 15h18: Atividade realizada em campo sem impedimento.</div>
-                <div>03/05/2023 às 15h23: Submetido para aprovação.</div>
+                <div className='text-ellipsis'>03/05/2023 às 15h18: Atividade realizada em campo sem impedimento.</div>
+                <div className='text-ellipsis'>03/05/2023 às 15h23: Submetido para aprovação.</div>
               </div>
             </Col>
           </Row>

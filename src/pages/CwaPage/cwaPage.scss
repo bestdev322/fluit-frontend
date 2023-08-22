@@ -38,6 +38,10 @@
     right: 40px;
     float: right;
 
+    @media screen and (max-width: 500px) {
+        right: 0px;
+    }
+
     .ant-modal-content {
         padding: 0px;
         border-radius: 10px 10px;
@@ -69,10 +73,22 @@
 
             .modal-body {
                 padding: 0px 15px;
+                text-overflow: ellipsis;
+                overflow: hidden;
 
-                .upload-cloud-btn .ant-upload-select {
-                    height: 30px;
-                    width: 80%;
+                .upload-cloud-btn {
+                    .ant-upload-select {
+                        height: 30px;
+                    }
+
+                    button {
+                        @media screen and (max-width: 455px) {
+                            width: 100px;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                        }
+                    }
                 }
 
                 .uploaded-file-list {
@@ -84,7 +100,24 @@
                         min-height: 90px;
                     }
                 }
+
+                .modal-upload-button span {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+
+                    @media screen and (max-width: 455px) {
+                        width: 80px;
+                    }
+                }
+
             }
         }
     }
+}
+
+.text-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }

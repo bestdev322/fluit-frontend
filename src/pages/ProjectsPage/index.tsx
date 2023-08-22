@@ -79,7 +79,7 @@ const onChange: PaginationProps['onChange'] = (page) => {
           <Text className='project-title'> Projeto A</Text>
         </Col>
       </Row>
-      <Card size="small" title="Projetos" extra={''} style={{ width: 1270 }}>
+      <Card size="small" title="Projetos" extra={''}>
         <Row>
           <Col span={24}>
             <Table
