@@ -21,7 +21,7 @@ interface ExpandedDataType {
   key: React.Key;
   name: string;
   area: string;
-  disciplina: string;
+  description: string;
   subdisciplina: string;
   state: Object;
 }
@@ -71,13 +71,13 @@ function CwaPage() {
             {
               key: 11,
               state: <Badge status="success" />,
-              content: <a onClick={showModal} style={{color: '#DA4F37'}}><ClockCircleOutlined style={{ padding: "4px" }} /><FileSearchOutlined style={{ padding: "4px" }} />1. Instalação na base de equipamentos</a>,
+              content: <a onClick={showModal} style={{ color: '#DA4F37' }}><ClockCircleOutlined style={{ padding: "4px" }} /><FileSearchOutlined style={{ padding: "4px" }} />1. Instalação na base de equipamentos</a>,
               status: 'Em andamento',
             },
             {
               key: 22,
               state: <Badge status="processing" />,
-              content: <a style={{color: '#DA4F37'}}><ClockCircleOutlined style={{ padding: "4px" }} /><FileSearchOutlined style={{ padding: "4px" }} />2. Alinhamento / Nivelamento e demais conexões</a>,
+              content: <a style={{ color: '#DA4F37' }}><ClockCircleOutlined style={{ padding: "4px" }} /><FileSearchOutlined style={{ padding: "4px" }} />2. Alinhamento / Nivelamento e demais conexões</a>,
               status: 'Não iniciado',
             },
           ];
@@ -128,19 +128,40 @@ function CwaPage() {
       return <Table columns={columns} dataSource={data} expandable={{ expandedRowRender }} showHeader={false} pagination={false} />;
     }
     const columns: TableColumnsType<ExpandedDataType> = [
-      { title: 'Nome', dataIndex: 'name', key: 'name' },
+      { title: 'Nome', dataIndex: 'name', key: 'name', render: (name) => (<a>{name}</a>) },
       { title: 'Área', dataIndex: 'area', key: 'area' },
-      { title: 'Disciplina', dataIndex: 'disciplina', key: 'disciplina' },
+      { title: 'Disciplina', dataIndex: 'description', key: 'description' },
       { title: 'Subdisciplina', dataIndex: 'subdisciplina', key: 'subdisciplina' },
       { title: 'Status', dataIndex: 'state', key: 'state' },
     ];
+
+    api.get("/v1/cwas/" + record.id + "/wps")
+      .then((response) => {
+        if (response.status === 200) {
+          const data2 = response.data.data;
+          console.log(response.data)
+          const table2 = data2.map((obj: any) => ({
+            ...obj,
+            key: obj.id,
+            actions: <>
+              <Button type="primary" onClick={() => navigate("/cwas/" + obj.id)}>
+                Abrir
+              </Button>
+            </>
+          }));
+
+          // setDataTable(table);
+          // setFetchingData(false)
+        }
+
+      });
 
     const data = [
       {
         key: 1,
         name: 'KN-N1344-290-B-BT-0001',
         area: 'Geral',
-        disciplina: 'Infra',
+        description: 'Infra',
         subdisciplina: 'Terraplanagem',
         state: <Badge status="success" text="Finalizado" />,
       },
@@ -148,7 +169,7 @@ function CwaPage() {
         key: 2,
         name: 'KN-N1344-290-B-BT-0002',
         area: 'Geral',
-        disciplina: 'Infra',
+        description: 'Infra',
         subdisciplina: 'Terraplanagem',
         state: <Badge status="success" text="Finalizado" />,
       },
@@ -162,8 +183,8 @@ function CwaPage() {
     api.get("/v1/projects/" + 1 + "/cwas")
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data.data)
           const data = response.data.data;
-          console.log(data)
           const table = data.map((obj: any) => ({
             ...obj,
             key: obj.id,
@@ -183,7 +204,7 @@ function CwaPage() {
   }, []);
 
   const columns: TableColumnsType<DataType> = [
-    { title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code' },
+    { title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code', render: (cwa_code, record) => (<a onClick={() => navigate("/wps/" + record.key)}>{cwa_code}</a>) },
     { title: 'Descrição', dataIndex: 'description', key: 'description' },
   ];
 
@@ -250,7 +271,7 @@ function CwaPage() {
         </Row>
         <Card size="small" title="CWA - Áreas do Projeto" extra={''}>
           <Row>
-            <Col span={24} style={{overflow: 'auto'}}>
+            <Col span={24} style={{ overflow: 'auto' }}>
               <Table
                 className='table-cwa'
                 columns={columns}
@@ -258,11 +279,18 @@ function CwaPage() {
                 expandable={{ expandedRowRender }}
                 dataSource={dataTable}
                 loading={fetchingData}
+                pagination={false}
+                scroll={{ y: 350 }}
                 locale={{ emptyText: 'Sem dados' }}
                 size='small'
-                style={{minWidth: '600px'}}
+                style={{ minWidth: '600px' }}
               />
             </Col>
+          </Row>
+          <Row justify={'center'} className='table-insert'>
+            <Col span={7}><Input placeholder="Nome" /></Col>
+            <Col span={12}><Input placeholder="Descrição" /></Col>
+            <Col span={4} sm={3} lg={2}><Button type="primary">Inserir</Button></Col>
           </Row>
         </Card>
         <Modal footer={null} closeIcon={true} width={600} className='measure-modal' open={isModalOpen} onCancel={handleCancel}>

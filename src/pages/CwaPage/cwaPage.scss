@@ -123,3 +123,10 @@
     overflow: hidden;
     white-space: nowrap;
 }
+
+.table-insert {
+    margin-top: 10px;
+    @media screen and (min-width: $md) {
+        gap: 10px;
+    }
+}

@@ -13,10 +13,10 @@ const { Content } = Layout;
 function HeaderSystem() {
     const navigate = useNavigate();
     return (
-        <Content className="site-layout header-layout" style={{ margin: '0 auto' }}  >
+        <Content className="site-layout header-layout" style={{ margin: '0 auto', paddingTop: '30px' }}  >
             <Row className='header-row' align={'middle'} >
                 <Col>
-                    <Image src={logo} preview={false} className='logo mt-4 mb-4' onClick={() => navigate("/dashboard/")} />
+                    <Image src={logo} preview={false} className='logo' onClick={() => navigate("/dashboard/")} />
                 </Col>
                 <Col span={15} className='search-desktop'>
                     <Input className='search' placeholder='Pesquisar CWAs' />
