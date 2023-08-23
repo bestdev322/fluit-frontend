@@ -13,6 +13,7 @@ import CwaPage from "./pages/CwaPage";
 import EwpPage from "./pages/EwpPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProjectsPage from "./pages/ProjectsPage";
+import WpPage from "./pages/WpPage"
 
 
 
@@ -31,10 +32,7 @@ const router = createBrowserRouter(
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="cwas/:project_id" element={<CwaPage />} />
-
-        
-
-
+        <Route path="wps/:cwa_id" element={<WpPage />} />
       </Route>
     
   )
