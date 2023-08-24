@@ -1,55 +1,32 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { Key, ReactNode, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './wpPage.scss'
+import './cwaEditPage.scss'
 import Layout from '../../components/Template/Layout';
 import api from '../../services/Api';
-import { Badge, Button, Card, Col, Row, Table, TableColumnsType, Typography, message, Input } from 'antd';
+import { Badge, Button, Card, Col, Row, Table, TableColumnsType, Typography, Modal, message, Input, Upload, Divider } from 'antd';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { TableRowSelection } from 'antd/es/table/interface';
+import { ClockCircleOutlined, FileSearchOutlined, CloudUploadOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
+const { TextArea } = Input;
 
 interface DataType {
   key: React.Key;
   name: string;
-  area: string;
   description: string;
-  subdisciplina: string;
-  state: Object;
 }
 
-function WpPage() {
-  const { cwa_id } = useParams();
+function CwaEditPage() {
+
   const [dataTable, setDataTable] = useState();
   const [fetchingData, setFetchingData] = useState(false);
+  const { project_id } = useParams();
   const navigate = useNavigate();
 
-
-  useEffect(() => {
-    setFetchingData(true)
-    api.get("/v1/cwas/" + cwa_id + "/wps")
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data.data)
-          const data = response.data.data;
-          const table = data.map((obj: any) => ({
-            ...obj,
-            key: obj.id
-          }));
-
-          setDataTable(table);
-          setFetchingData(false)
-        }
-
-      });
-
-  }, []);
-
   const columns: TableColumnsType<DataType> = [
-    { title: 'Nome', dataIndex: 'name', key: 'name', render: (name, record) => (<a style={{color: 'black'}} onClick={() => navigate("/ewp/" + record.key)}>{name}</a>) },
-    { title: 'Área', dataIndex: 'area', key: 'area' },
-    { title: 'Disciplina', dataIndex: 'description', key: 'description' },
-    { title: 'Subdisciplina', dataIndex: 'subdisciplina', key: 'subdisciplina' },
-    { title: 'Status', dataIndex: 'state', key: 'state' },
+    { title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code', render: (cwa_code, record) => (<a style={{ color: 'black' }} onClick={() => navigate("/wps/" + record.key)}>{cwa_code}</a>) },
+    { title: 'Descrição', dataIndex: 'description', key: 'description' },
   ];
 
   const rowSelection: TableRowSelection<DataType> = {
@@ -63,6 +40,24 @@ function WpPage() {
       console.log(selected, selectedRows, changeRows);
     },
   };
+
+  useEffect(() => {
+    setFetchingData(true)
+    api.get("/v1/projects/" + project_id + "/cwas")
+      .then((response) => {
+        if (response.status === 200) {
+          const data = response.data.data;
+          const table = data.map((obj: any) => ({
+            ...obj,
+            key: obj.id
+          }));
+
+          setDataTable(table);
+          setFetchingData(false)
+        }
+      });
+  }, []);
+
 
   return (
     <>
@@ -90,9 +85,8 @@ function WpPage() {
             </Col>
           </Row>
           <Row justify={'center'} className='table-insert'>
-            <Col span={6}><Input placeholder="Nome" /></Col>
-            <Col span={6}><Input placeholder="Disciplina" /></Col>
-            <Col span={6}><Input placeholder="Subdisciplina" /></Col>
+            <Col span={7}><Input placeholder="Nome" /></Col>
+            <Col span={12}><Input placeholder="Descrição" /></Col>
             <Col span={4} sm={3} lg={2}><Button type="primary">Inserir</Button></Col>
           </Row>
         </Card>
@@ -101,4 +95,4 @@ function WpPage() {
   );
 }
 
-export default WpPage;
+export default CwaEditPage;

@@ -1,5 +1,5 @@
-import { ReactNode, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Key, ReactNode, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import './cwaPage.scss'
 import Layout from '../../components/Template/Layout';
 import api from '../../services/Api';
@@ -42,10 +42,20 @@ interface ExpandedData2Type {
 function CwaPage() {
 
   const [dataTable, setDataTable] = useState();
+  const [dataTable1, setDataTable1] = useState([]);
+  const [dataTable2, setDataTable2] = useState([]);
   const [fetchingData, setFetchingData] = useState(false);
+  const [fetchingData2, setFetchingData2] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
+  const { project_id } = useParams();
+  const navigate = useNavigate();
+
+  const columns: TableColumnsType<DataType> = [
+    { title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code', render: (cwa_code, record) => (<a style={{ color: 'black' }} onClick={() => navigate("/wps/" + record.key)}>{cwa_code}</a>) },
+    { title: 'Descrição', dataIndex: 'description', key: 'description' },
+  ];
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -55,7 +65,6 @@ function CwaPage() {
     setIsModalOpen(false);
   };
 
-  const navigate = useNavigate();
 
   const expandedRowRender = (record: any, index: any, indent: any, expanded: any): ReactNode => {
     const expandedRowRender = (record: any, index: any, indent: any, expanded: any): ReactNode => {
@@ -125,36 +134,16 @@ function CwaPage() {
         },
       ];
 
-      return <Table columns={columns} dataSource={data} expandable={{ expandedRowRender }} showHeader={false} pagination={false} />;
+      return <Table columns={columns} dataSource={dataTable2[record.id]} expandable={{ expandedRowRender }} showHeader={false} pagination={false} />;
     }
+
     const columns: TableColumnsType<ExpandedDataType> = [
-      { title: 'Nome', dataIndex: 'name', key: 'name', render: (name) => (<a>{name}</a>) },
+      { title: 'Nome', dataIndex: 'name', key: 'name', render: (name, record) => (<a style={{ color: 'black' }} onClick={() => navigate("/ewp/" + record.key)}>{name}</a>) },
       { title: 'Área', dataIndex: 'area', key: 'area' },
       { title: 'Disciplina', dataIndex: 'description', key: 'description' },
       { title: 'Subdisciplina', dataIndex: 'subdisciplina', key: 'subdisciplina' },
       { title: 'Status', dataIndex: 'state', key: 'state' },
     ];
-
-    api.get("/v1/cwas/" + record.id + "/wps")
-      .then((response) => {
-        if (response.status === 200) {
-          const data2 = response.data.data;
-          console.log(response.data)
-          const table2 = data2.map((obj: any) => ({
-            ...obj,
-            key: obj.id,
-            actions: <>
-              <Button type="primary" onClick={() => navigate("/cwas/" + obj.id)}>
-                Abrir
-              </Button>
-            </>
-          }));
-
-          // setDataTable(table);
-          // setFetchingData(false)
-        }
-
-      });
 
     const data = [
       {
@@ -173,40 +162,10 @@ function CwaPage() {
         subdisciplina: 'Terraplanagem',
         state: <Badge status="success" text="Finalizado" />,
       },
-    ];
+    ]
 
-    return <Table columns={columns} dataSource={data} expandable={{ expandedRowRender }} pagination={false} />;
+    return <Table columns={columns} dataSource={dataTable1[record.id]} onExpandedRowsChange={(e) => setExpandedData2(e[e.length - 1])} expandable={{ expandedRowRender }} pagination={false} />;
   };
-
-  useEffect(() => {
-    setFetchingData(true)
-    api.get("/v1/projects/" + 1 + "/cwas")
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data.data)
-          const data = response.data.data;
-          const table = data.map((obj: any) => ({
-            ...obj,
-            key: obj.id,
-            actions: <>
-              <Button type="primary" onClick={() => navigate("/cwas/" + obj.id)}>
-                Abrir
-              </Button>
-            </>
-          }));
-
-          setDataTable(table);
-          setFetchingData(false)
-        }
-
-      });
-
-  }, []);
-
-  const columns: TableColumnsType<DataType> = [
-    { title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code', render: (cwa_code, record) => (<a onClick={() => navigate("/wps/" + record.key)}>{cwa_code}</a>) },
-    { title: 'Descrição', dataIndex: 'description', key: 'description' },
-  ];
 
   const rowSelection: TableRowSelection<DataType> = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -219,7 +178,6 @@ function CwaPage() {
       console.log(selected, selectedRows, changeRows);
     },
   };
-
 
   const props: UploadProps = {
     onRemove: (file) => {
@@ -260,6 +218,59 @@ function CwaPage() {
       });
   };
 
+  const setExpandedData1 = (key: Key) => {
+    if (!key) return false;
+    api.get("/v1/cwas/" + key + "/wps")
+      .then((response) => {
+        // setFetchingData2(true)
+        if (response.status === 200) {
+          const data1 = response.data.data.map((obj: any) => ({
+            ...obj,
+            key: obj.id,
+          }));
+          setDataTable1({...dataTable1, [key]: data1});
+          // setFetchingData2(false)
+        }
+      });
+  }
+
+  const setExpandedData2 = (key: Key) => {
+    if (!key) return false;
+    api.get("/v1/wps/" + key + "/activities")
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response.data.data)
+          const data2 = response.data.data.map((obj: any) => ({
+            ...obj,
+            key: obj.id,
+          }));
+          setDataTable2({...dataTable2, [key]: data2});
+        }
+      });
+  }
+
+  useEffect(() => {
+    setFetchingData(true)
+    api.get("/v1/projects/" + project_id + "/cwas")
+      .then((response) => {
+        if (response.status === 200) {
+          const data = response.data.data;
+          const table = data.map((obj: any) => ({
+            ...obj,
+            key: obj.id,
+            actions: <>
+              <Button type="primary" onClick={() => navigate("/cwas/" + obj.id)}>
+                Abrir
+              </Button>
+            </>
+          }));
+
+          setDataTable(table);
+          setFetchingData(false)
+        }
+      });
+  }, []);
+
 
   return (
     <>
@@ -277,6 +288,7 @@ function CwaPage() {
                 columns={columns}
                 rowSelection={rowSelection}
                 expandable={{ expandedRowRender }}
+                onExpandedRowsChange={(e) => setExpandedData1(e[e.length - 1])}
                 dataSource={dataTable}
                 loading={fetchingData}
                 pagination={false}
@@ -288,8 +300,8 @@ function CwaPage() {
             </Col>
           </Row>
           <Row justify={'center'} className='table-insert'>
-            <Col span={7}><Input placeholder="Nome" /></Col>
-            <Col span={12}><Input placeholder="Descrição" /></Col>
+            <Col span={7} onClick={() => navigate("/cwas_edit/" + project_id)}><Input placeholder="Nome" /></Col>
+            <Col span={12} onClick={() => navigate("/cwas_edit/" + project_id)}><Input placeholder="Descrição" /></Col>
             <Col span={4} sm={3} lg={2}><Button type="primary">Inserir</Button></Col>
           </Row>
         </Card>
