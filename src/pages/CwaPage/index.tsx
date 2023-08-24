@@ -139,9 +139,9 @@ function CwaPage() {
 
     const columns: TableColumnsType<ExpandedDataType> = [
       { title: 'Nome', dataIndex: 'name', key: 'name', render: (name, record) => (<a style={{ color: 'black' }} onClick={() => navigate("/ewp/" + record.key)}>{name}</a>) },
-      { title: 'Área', dataIndex: 'area', key: 'area' },
-      { title: 'Disciplina', dataIndex: 'description', key: 'description' },
-      { title: 'Subdisciplina', dataIndex: 'subdisciplina', key: 'subdisciplina' },
+      { title: 'Descrição', dataIndex: 'description', key: 'description' },
+      { title: 'Disciplina', dataIndex: 'discipline_id', key: 'discipline_id' },
+      { title: 'Subdisciplina', dataIndex: 'sub_discipline_id', key: 'sub_discipline_id' },
       { title: 'Status', dataIndex: 'state', key: 'state' },
     ];
 
