@@ -1,12 +1,10 @@
-import { Key, ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './cwaEditPage.scss'
 import Layout from '../../components/Template/Layout';
 import api from '../../services/Api';
-import { Badge, Button, Card, Col, Row, Table, TableColumnsType, Typography, Modal, message, Input, Upload, Divider } from 'antd';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { Button, Card, Col, Row, Table, TableColumnsType, Typography, Input } from 'antd';
 import type { TableRowSelection } from 'antd/es/table/interface';
-import { ClockCircleOutlined, FileSearchOutlined, CloudUploadOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
 const { TextArea } = Input;
