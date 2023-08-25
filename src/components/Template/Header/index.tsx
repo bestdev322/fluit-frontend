@@ -22,7 +22,7 @@ function HeaderSystem() {
                     <Input className='search' placeholder='Pesquisar CWAs' />
                 </Col>
                 <Col style={{display:'flex', alignItems:'center', gap: '5px'}}>
-                    <VscGraph size={25}/>
+                    <VscGraph size={25} onClick={() => navigate("/charts/")}/>
                     <FaBars size={25}/>
                     <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>DZ</Avatar>
                     <Text>Danilo Zeni</Text>

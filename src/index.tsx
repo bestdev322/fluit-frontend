@@ -15,6 +15,7 @@ import EwpPage from "./pages/EwpPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import WpPage from "./pages/WpPage"
+import ChartsPage from "./pages/ChartsPage"
 
 
 
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
         <Route path="cwas/:project_id" element={<CwaPage />} />
         <Route path="wps/:cwa_id" element={<WpPage />} />
         <Route path="cwas_edit/:project_id" element={<CwaEditPage />} />
+        <Route path="charts" element={<ChartsPage />} />
       </Route>
     
   )

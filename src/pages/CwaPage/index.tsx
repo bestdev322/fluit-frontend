@@ -114,8 +114,7 @@ function CwaPage() {
         return <Table columns={columns} dataSource={data} expandable={{ expandedRowRender }} showHeader={false} pagination={false} />;
       }
       const columns: TableColumnsType<ExpandedData1Type> = [
-        { title: 'State', dataIndex: 'state', key: 'state', width: '20px' },
-        { title: 'Category', dataIndex: 'category', key: 'category', width: '25%' },
+        { title: 'Content', dataIndex: 'content', key: 'content', width: '25%' },
         { title: 'Type', dataIndex: 'type', key: 'type' },
       ];
 
@@ -163,7 +162,7 @@ function CwaPage() {
         state: <Badge status="success" text="Finalizado" />,
       },
     ]
-
+    // console.log(dataTable1[record.id])
     return <Table columns={columns} dataSource={dataTable1[record.id]} onExpandedRowsChange={(e) => setExpandedData2(e[e.length - 1])} expandable={{ expandedRowRender }} pagination={false} />;
   };
 
@@ -239,10 +238,10 @@ function CwaPage() {
     api.get("/v1/wps/" + key + "/activities")
       .then((response) => {
         if (response.status === 200) {
-          console.log(response.data.data)
           const data2 = response.data.data.map((obj: any) => ({
-            ...obj,
             key: obj.id,
+            content: obj.type == 'EWP' ? 'Engenharia' : obj.type == 'PWP' ? 'Fornecimento' : 'Construção',
+            type:obj.type
           }));
           setDataTable2({...dataTable2, [key]: data2});
         }
