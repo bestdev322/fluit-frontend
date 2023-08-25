@@ -1,3 +1,13 @@
+.chart-cards {
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
 .chart-cards .ant-card-body{
-    padding: 10px 110px;
+    padding: 10px 30%;
+}
+
+.pie-chart-card {
+    width: 48%;
+    max-width: 325px;
 }
