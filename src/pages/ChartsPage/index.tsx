@@ -120,26 +120,26 @@ function ChartsPage() {
                                 { value: 'Passos', label: 'Passos' },
                             ]}
                         /></Col>
-                        <Col><Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} /></Col>
+                        <Col span={9}><Search placeholder="input search text" onSearch={onSearch} /></Col>
                     </Row>
                     <Row>
-                        <Col span={15}>
-                            <Space wrap className='chart-cards'>
-                                <Card title="TOTAL" style={{width: 350}} size="small">
-                                    <Pie data={data1} />
-                                </Card>
-                                <Card title="NÃO INICIADOS" style={{width: 350}} size="small">
-                                    <Pie data={data2} />
-                                </Card>
-                                <Card title="EM ANDAMENTO" style={{width: 350}} size="small">
-                                    <Pie data={data3} />
-                                </Card>
-                                <Card title="FINALIZADOS" style={{width: 350}} size="small">
-                                    <Pie data={data4} />
-                                </Card>
-                            </Space>
+                        <Col span={24} sm={15}>
+                            <Row className='chart-cards'>
+                                    <Card title="TOTAL" size="small" className='pie-chart-card'>
+                                        <Pie data={data1} />
+                                    </Card>
+                                    <Card title="NÃO INICIADOS" size="small" className='pie-chart-card'>
+                                        <Pie data={data2} />
+                                    </Card>
+                                    <Card title="EM ANDAMENTO" size="small" className='pie-chart-card'>
+                                        <Pie data={data3} />
+                                    </Card>
+                                    <Card title="FINALIZADOS" size="small" className='pie-chart-card'>
+                                        <Pie data={data4} />
+                                    </Card>
+                            </Row>
                         </Col>
-                        <Col span={6}>
+                        <Col span={24} sm={9}>
                             <Table
                                 className='table-cwa'
                                 columns={columns}
