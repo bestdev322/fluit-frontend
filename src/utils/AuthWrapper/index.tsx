@@ -12,9 +12,6 @@ const AuthWrapper = (props: any) => {
     const [auth, dispatchAuth] = useReducer(authReducer, {logged: false, expired: false});
 
     useEffect(() => {
-
-        
-    
         
         if (loading) {
             const access_token = localStorage.getItem('access_token');

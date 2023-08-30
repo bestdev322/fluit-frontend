@@ -1,5 +1,4 @@
 import { Button, Col, Image, Input, Row, Typography } from 'antd';
-
 import api from "../../services/Api";
  
 import './login.scss';
@@ -15,7 +14,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [userPassword, setUserPassword] = useState();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  
 
 
   
@@ -30,6 +28,7 @@ function App() {
 
   const handleFormSubmit = ()=> {
     setIsLoading(true);
+    
     api.post("/v1/login", //ver como ler do .env
     {
       email: userEmail,
@@ -40,8 +39,12 @@ function App() {
 
     if(response.status === 200){
       
-      localStorage.setItem('access_token', JSON.stringify(response.data.plainTextToken));    
-      window.location.href = "/dashboard";
+      localStorage.setItem('access_token', response.data.plainTextToken);    
+      localStorage.setItem('user_name', response.data.user.name);    
+      localStorage.setItem('user_email', response.data.user.email);    
+      localStorage.setItem('user_image', response.data.user.avatar.image);    
+      localStorage.setItem('user_letters', response.data.user.avatar.letters);    
+      window.location.href = "/home";
       
     }
   })
@@ -66,11 +69,11 @@ function App() {
         </Col>
 
         <Col span={24}>
-          <Input placeholder='Usuário' className='mb-2' onBlur={handleEmail} />
+          <Input placeholder='Usuário' className='mb-2'  onChange={handleEmail}/>
         </Col>
         
         <Col span={24}>
-          <Input type='password' placeholder='Senha' className='mb-2'   onBlur={handlePassword} />
+          <Input type='password' placeholder='Senha' className='mb-2'    onChange={handlePassword}/>
         </Col>
         
           { errorMessage && 
@@ -85,7 +88,7 @@ function App() {
           
         </Col>
 
-        <Col span={24} className='mt-1'>
+        <Col span={0} className='mt-1'>
           <Text >Esqueci minha senha</Text>
         </Col>
         

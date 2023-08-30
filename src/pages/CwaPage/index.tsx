@@ -42,10 +42,14 @@ interface ExpandedData2Type {
 function CwaPage() {
 
   const [dataTable, setDataTable] = useState();
+  const [projectName, setProjectName] = useState('');
   const [dataTable1, setDataTable1] = useState([]);
   const [dataTable2, setDataTable2] = useState([]);
   const [fetchingData, setFetchingData] = useState(false);
   const [fetchingData2, setFetchingData2] = useState(false);
+  const [fetchingData3, setFetchingData3] = useState(false);
+  const [fetchingData4, setFetchingData4] = useState(false);
+  const [fetchingData5, setFetchingData5] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -91,7 +95,14 @@ function CwaPage() {
             },
           ];
 
-          return <Table columns={columns} dataSource={data} showHeader={false} pagination={false} />;
+          return <Table 
+                    columns={columns} 
+                    dataSource={data} 
+                    showHeader={false} 
+                    pagination={false} 
+                    loading={fetchingData2}
+                    locale={{ emptyText: 'Sem dados' }}
+                />;
         }
         const columns: TableColumnsType<ExpandedData2Type> = [
           { title: 'State', dataIndex: 'state', key: 'state', width: '30px' },
@@ -111,7 +122,14 @@ function CwaPage() {
           },
         ];
 
-        return <Table columns={columns} dataSource={data} expandable={{ expandedRowRender }} showHeader={false} pagination={false} />;
+        return <Table columns={columns} 
+                      dataSource={data} 
+                      expandable={{ expandedRowRender }} 
+                      showHeader={false} 
+                      pagination={false} 
+                      loading={fetchingData3}
+                      locale={{ emptyText: 'Sem dados' }}
+                  />;
       }
       const columns: TableColumnsType<ExpandedData1Type> = [
         { title: 'Content', dataIndex: 'content', key: 'content', width: '25%' },
@@ -133,7 +151,14 @@ function CwaPage() {
         },
       ];
 
-      return <Table columns={columns} dataSource={dataTable2[record.id]} expandable={{ expandedRowRender }} showHeader={false} pagination={false} />;
+      return <Table columns={columns} 
+                    dataSource={dataTable2[record.id]} 
+                    expandable={{ expandedRowRender }} 
+                    showHeader={false} 
+                    pagination={false} 
+                    loading={fetchingData4}
+                    locale={{ emptyText: 'Sem dados' }}
+              />;
     }
 
     const columns: TableColumnsType<ExpandedDataType> = [
@@ -163,7 +188,14 @@ function CwaPage() {
       },
     ]
     // console.log(dataTable1[record.id])
-    return <Table columns={columns} dataSource={dataTable1[record.id]} onExpandedRowsChange={(e) => setExpandedData2(e[e.length - 1])} expandable={{ expandedRowRender }} pagination={false} />;
+    return <Table columns={columns} 
+                  dataSource={dataTable1[record.id]} 
+                  onExpandedRowsChange={(e) => setExpandedData2(e[e.length - 1])} 
+                  expandable={{ expandedRowRender }} 
+                  pagination={false} 
+                  locale={{ emptyText: 'Sem dados' }}
+                  loading={fetchingData5}
+                />;
   };
 
   const rowSelection: TableRowSelection<DataType> = {
@@ -221,20 +253,21 @@ function CwaPage() {
     if (!key) return false;
     api.get("/v1/cwas/" + key + "/wps")
       .then((response) => {
-        // setFetchingData2(true)
+        setFetchingData2(true)
         if (response.status === 200) {
           const data1 = response.data.data.map((obj: any) => ({
             ...obj,
             key: obj.id,
           }));
           setDataTable1({...dataTable1, [key]: data1});
-          // setFetchingData2(false)
         }
+        setFetchingData2(false)
       });
   }
 
   const setExpandedData2 = (key: Key) => {
     if (!key) return false;
+      setFetchingData2(true)
     api.get("/v1/wps/" + key + "/activities")
       .then((response) => {
         if (response.status === 200) {
@@ -244,12 +277,22 @@ function CwaPage() {
             type:obj.type
           }));
           setDataTable2({...dataTable2, [key]: data2});
+          setFetchingData2(false)
         }
       });
   }
 
   useEffect(() => {
     setFetchingData(true)
+
+    api.get("/v1/projects/" + project_id )
+      .then((response) => {
+        if (response.status === 200) {
+          setProjectName(response.data.name)
+        }
+      });
+
+
     api.get("/v1/projects/" + project_id + "/cwas")
       .then((response) => {
         if (response.status === 200) {
@@ -276,7 +319,7 @@ function CwaPage() {
       <Layout>
         <Row>
           <Col sm={24} className='text-right mb-3' >
-            <Text className='project-title'> Projeto A</Text>
+            <Text className='project-title'> { projectName ?? '_' }</Text>
           </Col>
         </Row>
         <Card size="small" title="CWA - Áreas do Projeto" extra={''}>
@@ -290,19 +333,19 @@ function CwaPage() {
                 onExpandedRowsChange={(e) => setExpandedData1(e[e.length - 1])}
                 dataSource={dataTable}
                 loading={fetchingData}
-                pagination={false}
-                scroll={{ y: 350 }}
                 locale={{ emptyText: 'Sem dados' }}
+                pagination={false}
+                // scroll={{ y: 350 }}
                 size='small'
                 style={{ minWidth: '600px' }}
               />
             </Col>
           </Row>
-          <Row justify={'center'} className='table-insert'>
+          {/* <Row justify={'center'} className='table-insert'>
             <Col span={7} onClick={() => navigate("/cwas_edit/" + project_id)}><Input placeholder="Nome" /></Col>
             <Col span={12} onClick={() => navigate("/cwas_edit/" + project_id)}><Input placeholder="Descrição" /></Col>
             <Col span={4} sm={3} lg={2}><Button type="primary">Inserir</Button></Col>
-          </Row>
+          </Row> */}
         </Card>
         <Modal footer={null} closeIcon={true} width={600} className='measure-modal' open={isModalOpen} onCancel={handleCancel}>
           <Row>

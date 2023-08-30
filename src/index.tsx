@@ -16,6 +16,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import WpPage from "./pages/WpPage"
 import ChartsPage from "./pages/ChartsPage"
+import HomePage from "./pages/HomePage"
 
 
  
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
         <Route path="cwa" element={<CwaPage />} />
         <Route path="ewp/:wp_id" element={<EwpPage />} />
         <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="home" element={<HomePage />} />
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="cwas/:project_id" element={<CwaPage />} />
         <Route path="wps/:cwa_id" element={<WpPage />} />
