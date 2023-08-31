@@ -1,18 +1,18 @@
 .dashboard-menu{
-    border: 1px solid rgb(245, 106, 0);
+    border: 1px solid var(--purple-200);
     padding: 36px 6px;
     border-radius: 6px;
-    color: rgb(245, 106, 0);
+    color: var(--purple-200);
     width: 200px;
 
     span{
-        color: rgb(245, 106, 0)
+        color: var(--purple-200)
     }
 
     &:hover{
         cursor: pointer;
         color: #ffffff;
-        background-color: rgb(245, 106, 0);
+        background-color: var(--purple-200);
         span{
             color: #ffffff;
         }

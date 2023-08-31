@@ -31,7 +31,7 @@ function HeaderSystem() {
                 <Col style={{display:'flex', alignItems:'center', gap: '5px'}}>
                     {/* <VscGraph size={25} onClick={() => navigate("/charts/")}/> */}
                     {/* <FaBars size={25}/> */}
-                    <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>
+                    <Avatar  className='avatarImage' >
                         {
                             localStorage.getItem('user_letters')
                         }                        

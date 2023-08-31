@@ -17,8 +17,8 @@ body{
 }
 
 .loginBox .submit{
-   background-color: var(--orange-300);
-   border: 1px solid var(--black-0);
+   background-color: var(--purple-100);
+   border: 1px solid var(--purple-500);
    width: 150px;
    height: auto;
 }
@@ -27,6 +27,7 @@ body{
 .loginBox .submit:hover,.loginBox .submit:active{
    text-decoration: none;
    color: var(--black-0);
+   font-weight: 600;
    border: 1px solid var(--black-0);
 }
 
