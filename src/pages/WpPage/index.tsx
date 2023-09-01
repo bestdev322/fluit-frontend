@@ -1,10 +1,11 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './wpPage.scss'
 import Layout from '../../components/Template/Layout';
 import api from '../../services/Api';
 import { Badge, Button, Card, Col, Row, Table, TableColumnsType, Typography, message, Input } from 'antd';
 import type { TableRowSelection } from 'antd/es/table/interface';
+import { MinusCircleFilled } from '@ant-design/icons';
 
 const { Text } = Typography;
 
@@ -21,8 +22,13 @@ function WpPage() {
   const { cwa_id } = useParams();
   const [projectName, setProjectName] = useState('');
   const [wpName, setWpName] = useState('');
-  const [dataTable, setDataTable] = useState();
+
+  const [dataTable, setDataTable] = useState<any>([]);
   const [fetchingData, setFetchingData] = useState(false);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [subdescription, setSubDescription] = useState('');
+  const [selectedKey, setSelectedKey] = useState<Key>();
   const navigate = useNavigate();
 
 
@@ -31,6 +37,7 @@ function WpPage() {
     api.get("/v1/cwas/" + cwa_id + "/wps")
       .then((response) => {
         if (response.status === 200) {
+
           api.get("/v1/projects/" + response.data.data[0].project_id )
             .then((response) => {
               if (response.status === 200) {
@@ -48,10 +55,14 @@ function WpPage() {
 
           const data = response.data.data;
 
+          const table = response.data.data.map((obj: any) => ({
+            key: obj.id,
+            name: obj.name,
+            description: obj.discipline_name,
+            subdisciplina: obj.sub_discipline_name,
+            area: 'Geral',
+            state: 'Finalizado'
 
-          const table = data.map((obj: any) => ({
-            ...obj,
-            key: obj.id
           }));
 
           setDataTable(table);
@@ -63,24 +74,40 @@ function WpPage() {
   }, []);
 
   const columns: TableColumnsType<DataType> = [
-    { title: 'Nome', dataIndex: 'name', key: 'name', render: (name, record) => (<a style={{color: 'black'}} onClick={() => navigate("/wp/view/" + record.key)}>{name}</a>) },
-    { title: 'Descrição', dataIndex: 'description', key: 'description' },
-    { title: 'Disciplina', dataIndex: 'discipline_name', key: 'discipline_name' },
-    { title: 'Subdisciplina', dataIndex: 'sub_discipline_name', key: 'sub_discipline_name' },
+
+    // { title: 'Nome', dataIndex: 'name', key: 'name', render: (name, record) => (<a style={{color: 'black'}} onClick={() => navigate("/wp/view/" + record.key)}>{name}</a>) },
+    // { title: 'Descrição', dataIndex: 'description', key: 'description' },
+    // { title: 'Disciplina', dataIndex: 'discipline_name', key: 'discipline_name' },
+    // { title: 'Subdisciplina', dataIndex: 'sub_discipline_name', key: 'sub_discipline_name' },
+
+    {
+      title: 'Nome', dataIndex: 'name', key: 'name', render: (name, record) => {
+        if (record.key == selectedKey) return <><span style={{ color: 'black' }}>{name}</span> <a onClick={() => removeRecord(record.key)}><MinusCircleFilled style={{ color: 'red', marginLeft: 20 }} /></a></>;
+        return <a style={{ color: 'black' }} onClick={() => navigate("/wp/view/" + record.key)}>{name}</a>
+      }
+    },
+    { title: 'Área', dataIndex: 'area', key: 'area' },
+    { title: 'Disciplina', dataIndex: 'description', key: 'description' },
+    { title: 'Subdisciplina', dataIndex: 'subdisciplina', key: 'subdisciplina' },
+
     { title: 'Status', dataIndex: 'state', key: 'state' },
   ];
 
   const rowSelection: TableRowSelection<DataType> = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows);
+    onSelect: (record) => {
+      setSelectedKey(record.key);
     },
   };
+
+  const removeRecord = (key: Key) => {
+    const newData = dataTable.filter((item: any) => item.key !== key);
+    setDataTable(newData);
+  }
+
+  const insertHandle = () => {
+    if (name == '') return false;
+    setDataTable([...dataTable, { name: name, description: description, subdisciplina: subdescription, state: 'Finalizado', area: 'Geral' }]);
+  }
 
   return (
     <>
@@ -96,7 +123,10 @@ function WpPage() {
               <Table
                 className='table-cwa'
                 columns={columns}
-                rowSelection={rowSelection}
+                rowSelection={{
+                  type: 'radio',
+                  ...rowSelection,
+                }}
                 dataSource={dataTable}
                 loading={fetchingData}
                 pagination={false}
@@ -107,12 +137,14 @@ function WpPage() {
               />
             </Col>
           </Row>
+
           {/* <Row justify={'center'} className='table-insert'>
-            <Col span={6}><Input placeholder="Nome" /></Col>
-            <Col span={6}><Input placeholder="Disciplina" /></Col>
-            <Col span={6}><Input placeholder="Subdisciplina" /></Col>
-            <Col span={4} sm={3} lg={2}><Button type="primary">Inserir</Button></Col>
+            <Col span={6}><Input placeholder="Nome" value={name} onChange={e => setName(e.target.value)} /></Col>
+            <Col span={6}><Input placeholder="Disciplina" value={description} onChange={e => setDescription(e.target.value)} /></Col>
+            <Col span={6}><Input placeholder="Subdisciplina" value={subdescription} onChange={e => setSubDescription(e.target.value)} /></Col>
+            <Col span={4} sm={3} lg={2}><Button type="primary" onClick={insertHandle}>Inserir</Button></Col>
           </Row> */}
+
         </Card>
       </Layout>
     </>
