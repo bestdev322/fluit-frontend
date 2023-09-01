@@ -6,8 +6,7 @@ import api from '../../services/Api';
 import { Badge, Button, Card, Col, Row, Table, TableColumnsType, Typography, Modal, message, Input, Upload, Divider } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { TableRowSelection } from 'antd/es/table/interface';
-import { ClockCircleOutlined, FileSearchOutlined, CloudUploadOutlined } from '@ant-design/icons';
-
+import { ClockCircleOutlined, FileSearchOutlined, CloudUploadOutlined, MinusCircleFilled } from '@ant-design/icons';
 const { Text } = Typography;
 const { TextArea } = Input;
 
@@ -41,10 +40,13 @@ interface ExpandedData2Type {
 
 function CwaPage() {
 
-  const [dataTable, setDataTable] = useState();
+  
   const [projectName, setProjectName] = useState('');
   const [dataTable1, setDataTable1] = useState([]);
+  const [dataTable, setDataTable] = useState<any>();
   const [dataTable2, setDataTable2] = useState([]);
+  const [dataTable3, setDataTable3] = useState([]);
+  const [dataTable4, setDataTable4] = useState([]);
   const [fetchingData, setFetchingData] = useState(false);
   const [fetchingData2, setFetchingData2] = useState(false);
   const [fetchingData3, setFetchingData3] = useState(false);
@@ -54,10 +56,17 @@ function CwaPage() {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const { project_id } = useParams();
+  const [selectedKey, setSelectedKey] = useState<Key>();
   const navigate = useNavigate();
 
   const columns: TableColumnsType<DataType> = [
-    { title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code', render: (cwa_code, record) => (<a style={{ color: 'black' }} onClick={() => navigate("/wps/" + record.key)}>{cwa_code}</a>) },
+    {
+      title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code',
+      render: (cwa_code, record) => {
+        if (record.key == selectedKey) return <><span style={{ color: 'black' }}>{cwa_code}</span> <a onClick={() => removeRecord(record.key)}><MinusCircleFilled style={{ color: 'red', marginLeft: 20 }} /></a></>;
+        return <a style={{ color: 'black' }} onClick={() => navigate("/wps/" + record.key)}>{cwa_code}</a>
+      }
+    },
     { title: 'Descrição', dataIndex: 'description', key: 'description' },
   ];
 
@@ -69,9 +78,13 @@ function CwaPage() {
     setIsModalOpen(false);
   };
 
+  const removeRecord = (key: Key) => {
+    const newData = dataTable.filter((item: any) => item.key !== key);
+    setDataTable(newData);
+  }
 
-  const expandedRowRender = (record: any, index: any, indent: any, expanded: any): ReactNode => {
-    const expandedRowRender = (record: any, index: any, indent: any, expanded: any): ReactNode => {
+  const expandedRowRender = (record: any): ReactNode => {
+    const expandedRowRender = (record: any): ReactNode => {
       const expandedRowRender = (record: any, index: any, indent: any, expanded: any): ReactNode => {
         const expandedRowRender = (record: any, index: any, indent: any, expanded: any): ReactNode => {
           const columns: TableColumnsType<ExpandedData2Type> = [
@@ -109,56 +122,32 @@ function CwaPage() {
           { title: 'Content', dataIndex: 'content', key: 'content' },
         ];
 
-        const data = [
-          {
-            key: 11,
-            state: <Badge status="success" />,
-            content: 'Realizar a prontidão do CWP de equipamentos mecânicos - CH-1290KN-01',
-          },
-          {
-            key: 22,
-            state: <Badge status="default" />,
-            content: 'Montar equipamentos mecânicos - CH-1290KN-01',
-          },
-        ];
 
+        //Table 4
         return <Table columns={columns} 
-                      dataSource={data} 
+                      loading={fetchingData4} 
+                      dataSource={dataTable4[record.key]} 
                       expandable={{ expandedRowRender }} 
                       showHeader={false} 
-                      pagination={false} 
-                      loading={fetchingData3}
-                      locale={{ emptyText: 'Sem dados' }}
-                  />;
+                      pagination={false}
+                      locale={{ emptyText: 'Sem dados' }} />;
+
       }
       const columns: TableColumnsType<ExpandedData1Type> = [
         { title: 'Content', dataIndex: 'content', key: 'content', width: '25%' },
         { title: 'Type', dataIndex: 'type', key: 'type' },
       ];
 
-      const data = [
-        {
-          key: 11,
-          state: <Badge status="success" />,
-          category: 'Engenharia',
-          type: 'EWP',
-        },
-        {
-          key: 22,
-          state: <Badge status="default" />,
-          category: 'Fornecimento',
-          type: 'PWP',
-        },
-      ];
 
+      //Table 3
       return <Table columns={columns} 
-                    dataSource={dataTable2[record.id]} 
+                    dataSource={dataTable3[record.id]} 
                     expandable={{ expandedRowRender }} 
+                    onExpandedRowsChange={(e) => setExpandedData3(e[e.length - 1])} 
                     showHeader={false} 
                     pagination={false} 
-                    loading={fetchingData4}
-                    locale={{ emptyText: 'Sem dados' }}
-              />;
+                    locale={{ emptyText: 'Sem dados' }}/>;
+
     }
 
     const columns: TableColumnsType<ExpandedDataType> = [
@@ -169,44 +158,21 @@ function CwaPage() {
       { title: 'Status', dataIndex: 'state', key: 'state' },
     ];
 
-    const data = [
-      {
-        key: 1,
-        name: 'KN-N1344-290-B-BT-0001',
-        area: 'Geral',
-        description: 'Infra',
-        subdisciplina: 'Terraplanagem',
-        state: <Badge status="success" text="Finalizado" />,
-      },
-      {
-        key: 2,
-        name: 'KN-N1344-290-B-BT-0002',
-        area: 'Geral',
-        description: 'Infra',
-        subdisciplina: 'Terraplanagem',
-        state: <Badge status="success" text="Finalizado" />,
-      },
-    ]
-    // console.log(dataTable1[record.id])
+
+    // Table 2
     return <Table columns={columns} 
-                  dataSource={dataTable1[record.id]} 
+                  loading={fetchingData2} 
+                  dataSource={dataTable2[record.id]} 
                   onExpandedRowsChange={(e) => setExpandedData2(e[e.length - 1])} 
                   expandable={{ expandedRowRender }} 
                   pagination={false} 
-                  locale={{ emptyText: 'Sem dados' }}
-                  loading={fetchingData5}
-                />;
+                  locale={{ emptyText: 'Sem dados' }}/>;
+
   };
 
   const rowSelection: TableRowSelection<DataType> = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows);
+    onSelect: (record) => {
+      setSelectedKey(record.key);
     },
   };
 
@@ -251,33 +217,62 @@ function CwaPage() {
 
   const setExpandedData1 = (key: Key) => {
     if (!key) return false;
+    setFetchingData2(true)
     api.get("/v1/cwas/" + key + "/wps")
       .then((response) => {
-        setFetchingData2(true)
+        // setFetchingData2(true)
         if (response.status === 200) {
           const data1 = response.data.data.map((obj: any) => ({
             ...obj,
             key: obj.id,
+            description: obj.discipline_name,
+            subdisciplina: obj.sub_discipline_name,
+            area: 'Geral',
+            state: 'Finalizado'
           }));
-          setDataTable1({...dataTable1, [key]: data1});
+          setDataTable2({ ...dataTable2, [key]: data1 });
+          setFetchingData2(false)
         }
         setFetchingData2(false)
       });
   }
 
-  const setExpandedData2 = (key: Key) => {
+  const setExpandedData2 = async (key: Key) => {
+    let data2 = [
+      {
+        key: key + '-ewp',
+        content: 'Engenharia',
+        type: 'EWP',
+      },
+      {
+        key: key + '-pwp',
+        content: 'Fornecimento',
+        type: 'PWP',
+      },
+      {
+        key: key + '-cwp',
+        content: 'Construção',
+        type: 'CWP',
+      },
+    ]
+
+    setDataTable3({ ...dataTable3, [key]: data2 });
+  }
+
+  const setExpandedData3 = async (key: Key) => {
     if (!key) return false;
-      setFetchingData2(true)
-    api.get("/v1/wps/" + key + "/activities")
+    const arr = key.toString().split('-');
+    setFetchingData4(true)
+    await api.get(`/v1/wps/${arr[0]}/activities/${arr[1]}`)
       .then((response) => {
         if (response.status === 200) {
-          const data2 = response.data.data.map((obj: any) => ({
+          const data = response.data.data.map((obj: any) => ({
             key: obj.id,
-            content: obj.type == 'EWP' ? 'Engenharia' : obj.type == 'PWP' ? 'Fornecimento' : 'Construção',
-            type:obj.type
+            status: 1,
+            content: obj.name,
           }));
-          setDataTable2({...dataTable2, [key]: data2});
-          setFetchingData2(false)
+          setDataTable4({ ...dataTable4, [key]: data });
+          setFetchingData4(false)
         }
       });
   }
@@ -328,7 +323,10 @@ function CwaPage() {
               <Table
                 className='table-cwa'
                 columns={columns}
-                rowSelection={rowSelection}
+                rowSelection={{
+                  type: 'radio',
+                  ...rowSelection,
+                }}
                 expandable={{ expandedRowRender }}
                 onExpandedRowsChange={(e) => setExpandedData1(e[e.length - 1])}
                 dataSource={dataTable}
