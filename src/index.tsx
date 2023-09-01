@@ -11,7 +11,7 @@ import './assets/css/default.scss'
 import Login from "./pages/Login";
 import CwaPage from "./pages/CwaPage";
 import CwaEditPage from "./pages/CwaEditPage";
-import EwpPage from "./pages/EwpPage";
+import WpViewPage from "./pages/WpViewPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import WpPage from "./pages/WpPage"
@@ -31,7 +31,7 @@ const router = createBrowserRouter(
         <Route path="/" element={<Login />} />
         <Route path="login" element={<Login />} />
         <Route path="cwa" element={<CwaPage />} />
-        <Route path="ewp/:wp_id" element={<EwpPage />} />
+        <Route path="wp/view/:wp_id" element={<WpViewPage />} />
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="home" element={<HomePage />} />
         <Route path="projects" element={<ProjectsPage />} />

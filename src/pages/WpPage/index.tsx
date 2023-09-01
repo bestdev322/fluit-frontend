@@ -63,7 +63,7 @@ function WpPage() {
   }, []);
 
   const columns: TableColumnsType<DataType> = [
-    { title: 'Nome', dataIndex: 'name', key: 'name', render: (name, record) => (<a style={{color: 'black'}} onClick={() => navigate("/ewp/" + record.key)}>{name}</a>) },
+    { title: 'Nome', dataIndex: 'name', key: 'name', render: (name, record) => (<a style={{color: 'black'}} onClick={() => navigate("/wp/view/" + record.key)}>{name}</a>) },
     { title: 'Descrição', dataIndex: 'description', key: 'description' },
     { title: 'Disciplina', dataIndex: 'discipline_name', key: 'discipline_name' },
     { title: 'Subdisciplina', dataIndex: 'sub_discipline_name', key: 'sub_discipline_name' },

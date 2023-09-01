@@ -1,13 +1,13 @@
 import { Badge, Breadcrumb,  Card, Col,  Progress,  RadioChangeEvent,  Row, Table, Tabs, Typography } from 'antd';
 
-import './ewpPage.scss';
+import './wpViewPage.scss';
 import Layout from '../../components/Template/Layout';
 import {  useEffect, useState } from 'react';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
 
 const { Text } = Typography;
 
-function EwpPage() {
+function WpViewPage() {
 
   const [size, setSize] = useState<SizeType>('small');
   
@@ -216,4 +216,4 @@ function EwpPage() {
   );
 }
 
-export default EwpPage;
+export default WpViewPage;

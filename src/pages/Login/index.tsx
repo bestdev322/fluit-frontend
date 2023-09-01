@@ -77,12 +77,12 @@ function App() {
         </Col>
         
           { errorMessage && 
-            <Col span={24} className='mb-1 pb-1'>
+            <Col span={10} offset={7} className='mb-1 pb-1'>
               <Text type="danger">{errorMessage }</Text> 
             </Col>            
           } 
           
-        <Col span={24}>
+        <Col span={24} className='mt-1'>
           
             <Button className='submit pt-1 pb-1' onClick={handleFormSubmit} loading={isLoading}>Entrar</Button>
           
