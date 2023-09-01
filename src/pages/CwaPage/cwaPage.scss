@@ -130,3 +130,7 @@
         gap: 10px;
     }
 }
+
+.ant-table-thead .ant-table-selection-column {
+    background: var(--gray-300) !important;
+}
