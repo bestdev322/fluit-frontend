@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './cwaPage.scss'
 import Layout from '../../components/Template/Layout';
 import api from '../../services/Api';
-import { Badge, Button, Card, Col, Row, Table, TableColumnsType, Typography, Modal, message, Input, Upload, Divider } from 'antd';
+import { Badge, Button, Card, Col, Row, Table, ConfigProvider, TableColumnsType, Typography, Modal, message, Input, Upload, Divider, Spin } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { TableRowSelection } from 'antd/es/table/interface';
 import { ClockCircleOutlined, FileSearchOutlined, CloudUploadOutlined, MinusCircleFilled } from '@ant-design/icons';
@@ -44,10 +44,6 @@ function CwaPage() {
   const [dataTable2, setDataTable2] = useState([]);
   const [dataTable3, setDataTable3] = useState([]);
   const [dataTable4, setDataTable4] = useState([]);
-  const [fetchingData, setFetchingData] = useState(false);
-  const [fetchingData2, setFetchingData2] = useState(false);
-  const [fetchingData3, setFetchingData3] = useState(false);
-  const [fetchingData4, setFetchingData4] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -70,6 +66,8 @@ function CwaPage() {
     setIsModalOpen(true);
   };
 
+  const groupByKey = (list: any, key: any) => list.reduce((hash: any, obj: any) => ({ ...hash, [obj[key]]: (hash[obj[key]] || []).concat(obj) }), {})
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -78,6 +76,12 @@ function CwaPage() {
     const newData = dataTable.filter((item: any) => item.key !== key);
     setDataTable(newData);
   }
+
+  const customizeRenderEmpty = () => (
+    <div style={{ textAlign: 'center' }}>
+      <Spin />
+    </div>
+  );
 
   const expandedRowRender = (record: any): ReactNode => {
     const expandedRowRender = (record: any): ReactNode => {
@@ -112,7 +116,7 @@ function CwaPage() {
         ];
 
         //Table 4
-        return <Table columns={columns} loading={fetchingData4} dataSource={dataTable4[record.key]} expandable={{ expandedRowRender }} showHeader={false} pagination={false} />;
+        return <Table columns={columns} dataSource={dataTable4[record.key]} expandable={{ expandedRowRender }} showHeader={false} pagination={false} />;
       }
       const columns: TableColumnsType<ExpandedData1Type> = [
         { title: 'Content', dataIndex: 'content', key: 'content', width: '25%' },
@@ -132,7 +136,7 @@ function CwaPage() {
     ];
 
     // Table 2
-    return <Table columns={columns} loading={fetchingData2} dataSource={dataTable2[record.id]} onExpandedRowsChange={(e) => setExpandedData2(e[e.length - 1])} expandable={{ expandedRowRender }} pagination={false} />;
+    return <Table columns={columns} dataSource={dataTable2[record.id]} onExpandedRowsChange={(e) => setExpandedData2(e[e.length - 1])} expandable={{ expandedRowRender }} pagination={false} />;
   };
 
   const rowSelection: TableRowSelection<DataType> = {
@@ -182,7 +186,6 @@ function CwaPage() {
 
   const setExpandedData1 = (key: Key) => {
     if (!key) return false;
-    setFetchingData2(true)
     api.get("/v1/cwas/" + key + "/wps")
       .then((response) => {
         if (response.status === 200) {
@@ -195,37 +198,43 @@ function CwaPage() {
             state: 'Finalizado'
           }));
           setDataTable2({ ...dataTable2, [key]: data1 });
-          setFetchingData2(false)
         }
       });
   }
-
   const setExpandedData2 = async (key: Key) => {
-    let data2 = [
-      {
-        key: key + '-ewp',
-        content: 'Engenharia',
-        type: 'EWP',
-      },
-      {
-        key: key + '-pwp',
-        content: 'Fornecimento',
-        type: 'PWP',
-      },
-      {
-        key: key + '-cwp',
-        content: 'Construção',
-        type: 'CWP',
-      },
-    ]
+    await api.get(`v1/wps/${key}/activities`)
+      .then((response) => {
+        if (response.status === 200) {
+          const types = Object.keys(groupByKey(response.data.data, 'type'));
+          var data2 = [];
+          if (types.includes('EWP'))
+            data2.push({
+              key: key + '-ewp',
+              content: 'Engenharia',
+              type: 'EWP',
+            })
+          if (types.includes('PWP'))
+            data2.push({
+              key: key + '-pwp',
+              content: 'Fornecimento',
+              type: 'PWP',
+            })
+          if (types.includes('CWP'))
+            data2.push({
+              key: key + '-cwp',
+              content: 'Construção',
+              type: 'CWP',
+            })
 
-    setDataTable3({ ...dataTable3, [key]: data2 });
+          setDataTable3({ ...dataTable3, [key]: data2 });
+
+        }
+      });
   }
 
   const setExpandedData3 = async (key: Key) => {
     if (!key) return false;
     const arr = key.toString().split('-');
-    setFetchingData4(true)
     await api.get(`/v1/wps/${arr[0]}/activities/${arr[1]}`)
       .then((response) => {
         if (response.status === 200) {
@@ -235,13 +244,11 @@ function CwaPage() {
             content: obj.name,
           }));
           setDataTable4({ ...dataTable4, [key]: data });
-          setFetchingData4(false)
         }
       });
   }
 
   useEffect(() => {
-    setFetchingData(true)
     api.get("/v1/projects/" + project_id + "/cwas")
       .then((response) => {
         if (response.status === 200) {
@@ -257,7 +264,6 @@ function CwaPage() {
           }));
 
           setDataTable(table);
-          setFetchingData(false)
         }
       });
   }, []);
@@ -274,23 +280,24 @@ function CwaPage() {
         <Card size="small" title="CWA - Áreas do Projeto" extra={''}>
           <Row>
             <Col span={24} style={{ overflow: 'auto' }}>
-              <Table
-                className='table-cwa'
-                columns={columns}
-                rowSelection={{
-                  type: 'radio',
-                  ...rowSelection,
-                }}
-                expandable={{ expandedRowRender }}
-                onExpandedRowsChange={(e) => setExpandedData1(e[e.length - 1])}
-                dataSource={dataTable}
-                loading={fetchingData}
-                pagination={false}
-                scroll={{ y: 350 }}
-                locale={{ emptyText: 'Sem dados' }}
-                size='small'
-                style={{ minWidth: '600px' }}
-              />
+              <ConfigProvider renderEmpty={customizeRenderEmpty}>
+                <Table
+                  className='table-cwa'
+                  columns={columns}
+                  rowSelection={{
+                    type: 'radio',
+                    ...rowSelection,
+                  }}
+                  expandable={{ expandedRowRender }}
+                  onExpandedRowsChange={(e) => setExpandedData1(e[e.length - 1])}
+                  dataSource={dataTable}
+                  pagination={false}
+                  scroll={{ y: 350 }}
+                  locale={{ emptyText: 'Sem dados' }}
+                  size='small'
+                  style={{ minWidth: '600px' }}
+                />
+              </ConfigProvider>
             </Col>
           </Row>
           <Row justify={'center'} className='table-insert'>

@@ -9,7 +9,7 @@ import { MinusCircleFilled } from '@ant-design/icons';
 const { Text } = Typography;
 
 interface DataType {
-  key: React.Key;
+  key: Key;
   name: string;
   description: string;
 }
@@ -20,7 +20,7 @@ function CwaEditPage() {
   const [fetchingData, setFetchingData] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedKey, setSelectedKey] = useState<Key>();
+  const [selectedKeys, setSelectedKeys] = useState<Key[]>([0]);
   const { project_id } = useParams();
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ function CwaEditPage() {
     {
       title: 'Código', dataIndex: 'cwa_code', key: 'cwa_code',
       render: (cwa_code, record) => {
-        if (record.key == selectedKey) return <><span style={{ color: 'black' }}>{cwa_code}</span> <a onClick={() => removeRecord(record.key)}><MinusCircleFilled style={{ color: 'red', marginLeft: 20 }} /></a></>;
+        if (selectedKeys.includes(record.key)) return <><span style={{ color: 'black' }}>{cwa_code}</span> <a onClick={() => removeRecord(record.key)}><MinusCircleFilled style={{ color: 'red', marginLeft: 20 }} /></a></>;
         return <a style={{ color: 'black' }} onClick={() => navigate("/wps/" + record.key)}>{cwa_code}</a>
       }
     },
@@ -36,8 +36,12 @@ function CwaEditPage() {
   ];
 
   const rowSelection: TableRowSelection<DataType> = {
-    onSelect: (record) => {
-      setSelectedKey(record.key);
+    // onSelect: (record) => {
+    //   setSelectedKey(record.key);
+    // },
+
+    onChange: (selectedRowKeys: Key[]) => {
+      setSelectedKeys(selectedRowKeys);
     },
   };
 
@@ -84,7 +88,8 @@ function CwaEditPage() {
                 className='table-cwa'
                 columns={columns}
                 rowSelection={{
-                  type: 'radio',
+                  hideSelectAll: true,
+                  type: 'checkbox',
                   ...rowSelection,
                 }}
                 dataSource={dataTable}

@@ -126,7 +126,16 @@
 
 .table-insert {
     margin-top: 10px;
+
     @media screen and (min-width: $md) {
         gap: 10px;
     }
+}
+
+.table-cwa .ant-checkbox .ant-checkbox-inner {
+    border-radius: 50%;
+}
+
+.table-cwa .ant-checkbox-checked:after {
+    border-radius: 50%;
 }
