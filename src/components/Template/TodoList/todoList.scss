@@ -1,0 +1,13 @@
+@import '../../../assets/css/config.scss';
+.todo-list {
+    border-left: 1px solid black;
+    background-color: white;
+    @media screen and (max-width: $sm) {
+        position: absolute;
+        width: 100%;
+        flex-grow: 1;
+        height: -webkit-fill-available;
+    }
+}
+
+

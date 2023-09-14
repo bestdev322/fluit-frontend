@@ -111,12 +111,7 @@ function WpPage() {
 
   return (
     <>
-      <Layout>
-        <Row>
-          <Col sm={24} className='text-right mb-3' >
-            <Text className='project-title'> { projectName ?? '_' } { wpName ? ' > ' + wpName :  '_' }</Text>
-          </Col>
-        </Row>
+      <Layout breadcrumb = {projectName ?? '_' + ' ' + (wpName ? ' > ' + wpName :  '_')}>
         <Card size="small" title="WP - Work Package" extra={''}>
           <Row>
             <Col span={24} style={{ overflow: 'auto' }}>

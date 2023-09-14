@@ -71,12 +71,7 @@ function CwaEditPage() {
 
   return (
     <>
-      <Layout>
-        <Row>
-          <Col sm={24} className='text-right mb-3' >
-            <Text className='project-title'> Projeto A</Text>
-          </Col>
-        </Row>
+      <Layout breadcrumb='Projeto A'>
         <Card size="small" title="CWA - Áreas do Projeto" extra={''}>
           <Row>
             <Col span={24} style={{ overflow: 'auto' }}>

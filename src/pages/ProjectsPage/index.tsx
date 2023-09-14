@@ -35,7 +35,6 @@ function ProjectsPage() {
   const navigate = useNavigate();
 
 const onChange: PaginationProps['onChange'] = (page) => {
-  console.log(page);
   setCurrent(page);
 };
  
@@ -73,12 +72,7 @@ const onChange: PaginationProps['onChange'] = (page) => {
   
   return (
     <>
-     <Layout>
-      <Row>
-        <Col sm={24} className='text-right mb-3' >
-          <Text className='project-title'> _ </Text>
-        </Col>
-      </Row>
+     <Layout breadcrumb = '-'>
       <Card size="small" title="Projetos" extra={''}>
         <Row>
           <Col span={24}>

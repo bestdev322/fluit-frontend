@@ -14,12 +14,7 @@ function HomePage() {
 
   return (
     <>
-      <Layout>
-        <Row>
-          <Col sm={24} className='text-right mb-3' >
-            <Text className='project-title'> _</Text>
-          </Col>
-        </Row>    
+      <Layout breadcrumb="-">  
         <Card size="small" title="Home" extra={''}>
           <Row align={'middle'} className='mt-4 mb-6'>
             <Col className='dashboard-menu' onClick={() => navigate("/projects")}>

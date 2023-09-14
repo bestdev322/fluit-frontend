@@ -100,12 +100,7 @@ function ChartsPage() {
 
     return (
         <>
-            <Layout>
-                <Row>
-                    <Col sm={24} className='text-right mb-3' >
-                        <Text className='project-title'> Projeto A</Text>
-                    </Col>
-                </Row>
+            <Layout breadcrumb="Projeto A">
                 <Card size="small" title="Business Inteligence - CWAs" extra={''}>
                     <Row justify={'space-between'} style={{ padding: '10px' }}>
                         <Col><Select

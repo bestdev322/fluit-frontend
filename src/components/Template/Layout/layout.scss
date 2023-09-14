@@ -1,10 +1,24 @@
 @import '../../../assets/css/config.scss';
 .layout-container {
     margin: 0px auto;
-    width: 100%;
+    flex: 1 1 0;
     padding: 0px 50px;
     @media screen and (max-width: $sm) {
         padding: 0px 5px;
 
     }
+    overflow: auto;
+}
+
+.layout-container.show {
+    display: block;
+}
+.layout-container.hide {
+    @media screen and (max-width: $sm) {
+        display: none;
+    }
+}
+
+.project-title {
+    padding-right: 50px;
 }
